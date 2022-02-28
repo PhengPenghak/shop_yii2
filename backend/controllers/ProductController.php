@@ -68,19 +68,15 @@ class ProductController extends Controller
     public function actionCreate()
     {
         $model = new Product();
-        //  echo '<pre>';
-        // var_dump($_FILES);
-        // echo '<pre>';
-        // exit;
-
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
                 $model->product_create_date = date('d-m-y H:i:s');
                 $model->save();
-                return $this->redirect(['view', 'id' => $model->id]);
             }
+            return $this->redirect(['view', 'id' => $model->id]);
+
         } else {
-            $model->loadDefaultValues();
+            // $model->loadDefaultValues();
         }
 
         return $this->render('create', [

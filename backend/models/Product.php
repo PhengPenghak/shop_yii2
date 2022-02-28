@@ -56,27 +56,23 @@ class Product extends \yii\db\ActiveRecord
             'status' => 'Status',
             'category_id' => 'Category Id',
             'price' => 'Price',
-            'imageFile' => 'Product Image',
+            // 'imageFile' => 'Product Image',
             'image_url' => 'Product Image',
             'description' => 'Description',
             'rate' => 'Rate',
-            'product_create_date',
+            'product_create_date'=>'Create Date',
         ];
     }
     public function getProduct()
     {
         return $this->hasOne(Product::className(), ['category_id' => 'id']);
     }
-    public function save($runValidate = true, $attributeNames = null)
-    {
-        if ($this->imageFile){
-            echo '<pre>';
-            var_dump();
-            echo '<pre>';
-            exit;
-            $this->image = Yii::getAlias('@frontend/web/storage/products');
-        }
+    // public function save($runValidate = true, $attributeNames = null)
+    // {
+    //     if ($this->imageFile){
+    //         $this->image = Yii::getAlias('@frontend/web/storage/products');
+    //     }
        
-        $ok = parent::save($runValidate, $attributeNames); 
-    }
+    //     $ok = parent::save($runValidate, $attributeNames); 
+    // }
 }
