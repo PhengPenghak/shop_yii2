@@ -46,8 +46,17 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
             // 'id',
             'name',
-            // 'status',
-            'price',
+            [
+                'attribute' => 'status',
+                'content' => function($model){
+                /** @var \common\models\Product $model */
+
+                return Html::tag('span', $model->status ? 'Active' : 'Draft', [
+                    'class' => $model->status ? 'badge badge-success' : 'badge badge-danger'
+                ]);
+                }
+            ],
+            'price:currency',
             // 'image_url:url',
             'product_create_date',
             //'description',
