@@ -10,8 +10,7 @@ use yii\helpers\Url;
 
         <div class="row gx-4 gx-lg-5 align-items-center">
             <div class="col-md-6"><img class="card-img-top mb-5 mb-md-0"
-                    src="<?= $base_url . "/upload/" .  $model->image_url  ?>" />
-            </div>
+                    src="<?= $base_url . "/upload/" .  $model->image_url  ?>" /></div>
             <div class="col-md-6   ">
                 <h1 class="display-5 fw-bolder"><?= $model->name ?></h1>
                 <div class="fs-5 mb-5">
