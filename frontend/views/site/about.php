@@ -7,34 +7,34 @@ use yii\helpers\Html;
 $this->title = 'About';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-  <!-- about section -->
+<!-- about section -->
+<?php
 
-  <section class="about_section">
-    <div class="container-fluid  ">
-      <div class="row">
-        <div class="col-md-5 ml-auto">
-          <div class="detail-box pr-md-3">
-            <div class="heading_container">
-              <h2>
-                We Provide Best For You
-              </h2>
-            </div>
-            <p>
-              Totam architecto rem beatae veniam, cum officiis adipisci soluta perspiciatis ipsa, expedita maiores quae accusantium. Animi veniam aperiam, necessitatibus mollitia ipsum id optio ipsa odio ab facilis sit labore officia!
-              Repellat expedita, deserunt eum soluta rem culpa. Aut, necessitatibus cumque. Voluptas consequuntur vitae aperiam animi sint earum, ex unde cupiditate, molestias dolore quos quas possimus eveniet facilis magnam? Vero, dicta.
-            </p>
-            <a href="">
-              Read More
-            </a>
-          </div>
-        </div>
-        <div class="col-md-6 px-0">
-          <div class="img-box">
-            <img src="images/about-img.jpg" alt="">
-          </div>
-        </div>
-      </div>
+$base_url = Yii::getAlias('@web');
+?>
+
+<div class="col-md-6"><img class="card-img-top mb-5 mb-md-0" src="https://dummyimage.com/600x700/dee2e6/6c757d.jpg"
+        alt="..." /></div>
+<div class="col-md-6">
+    <div class="small mb-1">SKU: BST-498</div>
+    <h1 class="display-5 fw-bolder">Shop item template</h1>
+    <div class="fs-5 mb-5">
+        <span class="text-decoration-line-through">$45.00</span>
+        <span>$40.00</span>
     </div>
-  </section>
+    <p class="lead">Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium at dolorem quidem modi. Nam
+        sequi consequatur obcaecati excepturi alias magni, accusamus eius blanditiis delectus ipsam minima ea iste
+        laborum vero?</p>
+    <div class="d-flex">
+        <input class="form-control text-center me-3" id="inputQuantity" type="num" value="1" style="max-width: 3rem" />
+        <button class="btn btn-outline-dark flex-shrink-0" type="button">
+            <i class="bi-cart-fill me-1"></i>
+            Add to cart
+        </button>
+    </div>
+</div>
+</div>
+</div>
+</section>
 
-  <!-- end about section -->
+<!-- end about section -->

@@ -23,6 +23,7 @@ class ProductCategory extends \yii\db\ActiveRecord
     /**
      * {@inheritdoc}
      */
+    public $category_name;
     public function rules()
     {
         return [

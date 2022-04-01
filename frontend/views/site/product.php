@@ -1,49 +1,126 @@
-<section class="product_section layout_padding">
-    <div class="container">
-      <div class="heading_container heading_center">
-        <h2>
-          Our Products
-        </h2>
-      </div>
-     <div class="row">
-        <?php foreach($product as $key =>$pro){
-          ?>
-        <div class="col-sm-6 col-lg-4">
-          <div class="box">
-            <div class="img-box">
-              <img src="<?= $pro->image_url?>" alt="">
-              <a href="" class="add_cart_btn">
-                <span>
-                  Add To Cart
-                </span>
-              </a>
-            </div>
-            <div class="detail-box">
-              <h5>
-                <?= $pro->name?>
-              </h5>
-              <div class="product_info">
-                <h5>
-                  <span>$</span>
-                  <?= $pro->price?> 
-                </h5>
-                <div class="star_container">
-                  <i class="fa fa-star" aria-hidden="true"></i>
-                  <i class="fa fa-star" aria-hidden="true"></i>
-                  <i class="fa fa-star" aria-hidden="true"></i>
-                  <i class="fa fa-star" aria-hidden="true"></i>
-                  <i class="fa fa-star" aria-hidden="true"></i>
+<?php
+
+use yii\bootstrap4\Modal;
+use yii\helpers\Url;
+use yii\rbac\Item;
+
+Modal::begin([
+    'title' => 'Add User',
+    'id' => 'modal',
+    'size' => 'modal-lg',
+]);
+echo "<div id='modalContent'></div>";
+Modal::end();
+?>
+<?php $base_url = Yii::getAlias("@web");  ?>
+
+
+
+<!-- <div class="col-md-12 text-right custom-footer" style="font-size: 13px; position:fixed; z-index:10;bottom:3%;left:-76%">
+    <a href="#" class="btn btn-primary">MSI</a>
+    <a href="#" class="btn btn-success">ASUS</a>
+    <a href="#" class="btn btn-danger">DELL</a>
+</div> -->
+<?php $base_url = Yii::getAlias("@web");  ?>
+
+<section class="py-5 bg-light">
+    <div class="container px-4 px-lg-5 mt-5">
+        <h2 class="fw-bolder mb-4">Related products</h2>
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+
+            <?php
+            foreach ($product as $key => $pro) { //loop 
+            ?>
+
+            <div class="col mb-5 card  product-item " data-id=<?= $pro->id ?>>
+                <div class="card h-100">
+                    <!-- Product image-->
+                    <a href="<?= Url::toRoute(["/site/product-detail", 'id' => $pro->id]) ?>">
+                        <img class="card-img-top" src="<?= $base_url . "/upload/" .  $pro->image_url  ?>" alt=" ..." />
+                    </a>
+                    <!-- Product details-->
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <h5 class="fw-bolder"><?= $pro->name ?></h5>
+                            <!-- Product price-->
+                            $<?= $pro->price ?>
+                        </div>
+                        <div class="d-flex justify-content-center small text-warning mb-2">
+                            <?php  //loop star
+                                for ($i = 1; $i <= 5; $i++) {
+                                    if ($i < $pro->rate) {
+                                        echo '<i class="fa fa-star" aria-hidden="true" ></i>';
+                                    } else {
+                                        echo '<i class="fa fa-star text-dark" aria-hidden="true"></i>';
+                                    }
+                                }
+                                ?>
+                        </div>
+                    </div>
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <div class="text-center">
+                            <?php
+                                if (Yii::$app->user->isGuest) {
+                                    $url_route = Url::toRoute(['site/login']);
+                                    $url_title = 'Please login to continue';
+                                ?>
+                            <button type="button" value="<?= $url_route ?>" data-title="<?= $url_title ?>"
+                                class="btn btn-outline-dark triggerModal" style="font-size: 13px;">Add to
+                                cart</button>
+                            <?php
+                                } else {
+                                ?>
+                            <a href="" class="btn btn-outline-dark mt-auto add-to-cart">Add to cart</a>
+                            <?php } ?>
+                            </a>
+                        </div>
+
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
+
+            <?php } ?>
         </div>
-        <?php } ?>
-      </div>  
-         <div class="btn_box">
-        <a href="" class="view_more-link">
-          View More
-        </a>
-      </div>
     </div>
-  </section>
+</section>
+
+<?php
+
+$add_to_cart = Url::to(['site/cart']);
+$script = <<<JS
+
+const base_url = "$base_url";
+$('.add-to-cart').click(function(e) {
+  e.preventDefault();
+  var id =  $(this).closest(".product-item").data("id");
+  console.log(id);
+  $.ajax({
+    url: "$add_to_cart ",
+    method:'POST',
+    data:{
+      id: id,
+      action:"add-to-cart"
+    },
+    success: function(res){
+      var data = JSON.parse(res);
+      console.log(data);
+      if(data['status'] == 'success'){
+        $("#cart-quantity").text(data['totalCart']);
+      }else{
+        alter(data['message']);
+      } 
+    },
+
+    error: function(err){
+      console.log(err);
+    }
+  });   
+});
+  $(document).on("click",".triggerModal",function(){
+    $("#modal").modal("show").find("#modalContent").load($(this).attr("value"));
+  });
+JS;
+$this->registerJs($script);
+?>

@@ -2,6 +2,8 @@
 
 namespace frontend\controllers;
 
+use app\models\Cart;
+use app\models\OrderItems;
 use backend\models\Product;
 use backend\models\ProductCategory;
 use frontend\models\ResendVerificationEmailForm;
@@ -17,6 +19,11 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use yii\data\ActiveDataProvider;
+use Bar;
+use yii\base\Action;
+use yii\base\Model;
+use yii\web\NotFoundHttpException;
 
 /**
  * Site controller
@@ -33,6 +40,10 @@ class SiteController extends Controller
                 'class' => AccessControl::className(),
                 'only' => ['logout', 'signup'],
                 'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
                     [
                         'actions' => ['signup'],
                         'allow' => true,
@@ -52,6 +63,12 @@ class SiteController extends Controller
                 ],
             ],
         ];
+    }
+
+    public function beforeAction($action)
+    {
+        $this->enableCsrfValidation = false;
+        return parent::beforeAction($action);
     }
 
     /**
@@ -79,11 +96,11 @@ class SiteController extends Controller
     {
         $product = Product::find()->all();
         $this->layout = "homepage";
-        return $this->render('index',[
-           'product'=>$product
-        ]); 
+        return $this->render('index', [
+            'product' => $product
+        ]);
     }
- 
+
 
     /**
      * Logs in a user.
@@ -144,7 +161,7 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-   
+
 
     /**
      * Signs user up.
@@ -212,7 +229,6 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
-
     /**
      * Verify email address
      *
@@ -231,7 +247,6 @@ class SiteController extends Controller
             Yii::$app->session->setFlash('success', 'Your email has been confirmed!');
             return $this->goHome();
         }
-
         Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
         return $this->goHome();
     }
@@ -256,26 +271,172 @@ class SiteController extends Controller
             'model' => $model
         ]);
     }
-     public function actionAbout()
+    public function actionAbout()
     {
         $this->layout = "homepage";
         return $this->render('about');
     }
-    public function actionProduct(){
+    public function actionProduct()
+    {
+
         $product = Product::find()->all();
         $this->layout = "homepage";
-           return $this->render('index',[
-           'product'=>$product
+
+        return $this->render('product', [
+            'product' => $product,
         ]);
     }
+
+
     public function actionWhy()
     {
         $this->layout = "homepage";
         return $this->render('why');
     }
+
+    public function actionProductDetail($id)
+    {
+        $model = $this->findProductModel($id);
+
+        $this->layout = "homepage";
+        return $this->render('product-detail', [
+            'model' => $model,
+        ]);
+    }
     public function actionTestimonial()
     {
         $this->layout = "homepage";
         return $this->render('testimonial');
+    }
+    public function actionCheckout()
+    {
+        $this->layout = "homepage";
+        return $this->render('page-checkout');
+    }
+
+    /**
+     * TODO: it should be actionDependent
+     *
+     * @return 
+     */
+    public function actionCart()
+    {
+        if ($this->request->isAjax) {
+
+
+            if ($this->request->post('action') == 'remove_cart_item') {
+                $id = $this->request->post('id');
+                $current_user = Yii::$app->user->identity->id;
+                $model = Cart::findOne($id);
+                if (!$model) return json_encode(['success' => false, 'message' => 'Cart item not found!']);
+
+                if (!$model->delete()) {
+                    return json_encode(['success' => false, 'message' => 'Unable to remove cart item']);
+                }
+                $totalPrice = (float)$this->getCartTotalPrice();
+                $totalCart = (int)Cart::find(['user_id' => $current_user])->count();
+
+                return json_encode([
+                    'success' => true,
+                    'total_price' => Yii::$app->formatter->asCurrency($totalPrice),
+                    'total_cart' => $totalCart
+                ]);
+            }
+            if ($this->request->post('action') == 'update_qty') {
+                $cartId = $this->request->post('cartId');
+                $qty = $this->request->post('qty');
+                $model = Cart::findOne($cartId);
+                if (!$model) return json_encode(['status' => false, 'message' => 'no cart item found!']);
+                $model->quantity = $qty;
+                if (!$model->update()) {
+                    return json_encode(['status' => false, 'message' => 'updated']);
+                }
+            }
+
+            if ($this->request->post('action') == 'add-to-cart') {
+                $id = $this->request->post('id');
+                $userId = Yii::$app->user->id;
+                $product = Product::findOne($id);
+                // return $id;
+                // exit;
+                $cart = Cart::find()->where(['product_id' => $id, 'user_id' => $userId])
+                    ->one();
+                if ($cart) {
+                    $cart->quantity++;
+                } else {
+                    $cart = new Cart();
+                    $cart->user_id = $userId;
+                    $cart->product_id = $id;
+                    $cart->quantity = 1;
+                }
+                $cart->unit_price = $product->price;
+                $cart->total_price = $cart->quantity *  $cart->unit_price;
+                if ($cart->save()) {
+                    $current_user = Yii::$app->user->id;
+                    $totalCart = Cart::find()
+                        ->select(['SUM(quantity) quantity'])
+                        ->where(['user_id' => $current_user])
+                        ->one();
+                    $totalCart = $totalCart->quantity;
+                    return json_encode(['status' => 'success', 'totalCart' => $totalCart]);
+                } else {
+                    return json_encode(['status' => 'error', 'message' => $cart->getErrors()]);;
+                }
+            }
+        }
+    }
+    /**
+     * TODO: It should be actionCart
+     *
+     * @return
+     */
+    public function actionPage()
+    {
+
+        $this->layout = "homepage";
+        $current_user = Yii::$app->user->identity->id;
+        $carts = Yii::$app->db->createCommand(
+            "SELECT  cart.*, product.`name`, product.image_url, product.price
+            FROM cart
+            INNER JOIN product ON product.id = cart.product_id 
+            WHERE cart.user_id = " . $current_user
+        )->queryAll();
+        $totalPrice = (float)$this->getCartTotalPrice();
+        $totalCart = (int)Cart::find(['user_id' => $current_user])->count();
+        return $this->render('page-cart', ['carts' => $carts, 'total_price' => $totalPrice, 'total_cart' => $totalCart]);
+    }
+    private function getCartTotalPrice()
+    {
+        $current_user = Yii::$app->user->identity->id;
+        return Yii::$app->db->createCommand("SELECT 
+                SUM(cart.quantity * product.price) as total_price
+                FROM cart
+                INNER JOIN product ON product.id = cart.product_id
+                WHERE user_id = :userId
+        ")->bindParam("userId", $current_user)->queryScalar();
+    }
+
+    /**
+     * Finds the Product model based on its primary key value.
+     * If the model is not found, a 404 HTTP exception will be thrown.
+     * @param int $id ID
+     * @return Cart the loaded model
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    protected function findModel($id)
+    {
+        if (($model = Cart::findOne(['id' => $id])) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
+    }
+    protected function findProductModel($id)
+    {
+        if (($model = Product::findOne(['id' => $id])) !== null) {
+            return $model;
+        }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

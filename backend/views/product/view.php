@@ -32,8 +32,23 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
             'name',
             'category_id',
-            'price',
-            'image_url:url',
+            'price:currency',
+            [
+                'attribute' => 'status',
+                'format'=>['html'],
+                'value' => fn() =>Html::tag('span', $model->status ? 'Active' : 'Draft', ['class' => $model->status ? 'badge badge-success' : 'badge badge-danger'])
+            ],
+            [
+                'attribute' => 'image_url',
+                'label' => 'ProductImage',
+                'format'=>['html'],
+                'value'=> fn()=>Html::img($model->imageUrl, ['style' => 'width:150px;']),
+
+
+               
+                
+            ],
+            //'image_url:url',
             'description',
             'rate',
         ],

@@ -1,4 +1,5 @@
 <?php
+use yii\bootstrap4\LinkPager;
 
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -29,7 +30,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'tableOptions'=> [
-            'class'=> 'table table-border',
+            'class'=> 'table table-hover',
         ],
         'layout'=> '
             {items}
@@ -44,8 +45,29 @@ $this->params['breadcrumbs'][] = $this->title;
         ',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-            // 'id',
+            
             'name',
+
+            // [
+            //     'attribute' => 'release_date',
+            //     'value' => function ($model) {
+            //         $formater = Yii::$app->formater;
+            //         return $formater->fmDate($model->release_date);
+            //     }
+            // ],
+            //show image in backend
+            [
+                'attribute' => 'image_url',
+                'label' => 'ProductImage',
+                'content' => function ($model) {
+                    return Html::img($model->imageUrl, ['style' => 'width:150px;']);
+                },
+                'contentOptions' => [
+                    'style' => 'width:50px;'
+                ]
+            ],
+            
+            'price:currency',
             [
                 'attribute' => 'status',
                 'content' => function($model){
@@ -56,11 +78,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]);
                 }
             ],
-            'price:currency',
+
             // 'image_url:url',
-            'product_create_date',
+            // 'product_create_date',
             //'description',
             //'rate',
+            // 'id',
             [
                 'class' => ActionColumn::class,
                 'urlCreator' => function ($action, $model, $key, $index, $column){

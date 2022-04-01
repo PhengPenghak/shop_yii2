@@ -4,6 +4,7 @@ namespace backend\models;
 
 use Yii;
 use yii\validators\SafeValidator;
+use yii\helpers\FileHelper;
 
 /**
  * This is the model class for table "product".
@@ -17,11 +18,12 @@ use yii\validators\SafeValidator;
  * @property float|null $rate
  */
 class Product extends \yii\db\ActiveRecord
+
 {
+    
     /**
      * @var \yii\web\uploadedFile
      */
-    public $imageFile;
     /**
      * {@inheritdoc}
      */
@@ -36,12 +38,14 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name','price','status','image_url','category_id'], 'required'],
-            [['category_id'], 'integer'],
+            // [['name','price','status','category_id'], 'required'],
+            [['image_url'],'file'],
             [['rate'], 'number'],
             [['status','name','product_create_date','image_url', 'description'], 'string', 'max' => 255],
             [['price'], 'string', 'max' => 100],
-            [['imageFile'],'image','extensions' => 'png, jpg, jpeg, webp', 'maxSize' => 10 * 1024 * 1024],
+            [['product_create_date'], 'safe'],
+            // [['image_url'],'image','extensions' => 'png, jpg, jpeg, webp', 'maxSize' => 10 * 1024 * 1024],
+            
         ];
     }
 
@@ -53,26 +57,23 @@ class Product extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' =>'Product Name',
-            'status' => 'Status',
-            'category_id' => 'Category Id',
-            'price' => 'Price',
-            // 'imageFile' => 'Product Image',
             'image_url' => 'Product Image',
+            'price' => 'Price',
+            'status' => 'Status',
+            'category_id' => 'Category ID',
             'description' => 'Description',
             'rate' => 'Rate',
             'product_create_date'=>'Create Date',
         ];
     }
-    public function getProduct()
-    {
-        return $this->hasOne(Product::className(), ['category_id' => 'id']);
-    }
-    // public function save($runValidate = true, $attributeNames = null)
-    // {
-    //     if ($this->imageFile){
-    //         $this->image = Yii::getAlias('@frontend/web/storage/products');
-    //     }
-       
-    //     $ok = parent::save($runValidate, $attributeNames); 
+    //  public function getCategory(){
+    //     return $this->hasOne(ProductCategory::class, ['id' => 'category_id']);
     // }
+    
+    public function getImageUrl()
+    {
+        return str_replace("backend", 'frontend', Yii::$app->request->baseUrl) . "/upload/" . $this->image_url;
+    }
+   
 }
+

@@ -51,7 +51,7 @@ class SiteController extends Controller
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
-                
+
             ],
         ];
     }
@@ -73,7 +73,7 @@ class SiteController extends Controller
      */
     public function actionLogin()
     {
-         $this->layout = 'login';
+        $this->layout = 'login';
         if (!Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -101,5 +101,4 @@ class SiteController extends Controller
 
         return $this->goHome();
     }
-   
 }
