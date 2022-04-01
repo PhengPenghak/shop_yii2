@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use app\models\Cart;
 use app\models\OrderItems;
+use app\models\Orders;
 use backend\models\Product;
 use backend\models\ProductCategory;
 use frontend\models\ResendVerificationEmailForm;
@@ -24,6 +25,8 @@ use Bar;
 use yii\base\Action;
 use yii\base\Model;
 use yii\web\NotFoundHttpException;
+use app\models\OrderAddress;
+use common\models\User;
 
 /**
  * Site controller
@@ -310,8 +313,57 @@ class SiteController extends Controller
     }
     public function actionCheckout()
     {
+        
+        $model = new OrderAddress();
+        $user = Yii::$app->user->identity;
+       
+        $model->firstName = $user->firstname;
+        $model->lastName = $user->lastname;
+        $model->email = $user->email;
+
+        // $model->address = "Siem reap";
+        // $model->city = "Siem Reap";
+        // $model->state = "Phnom Penh";
+        // $model->country = "Cambodia";
+        // $model->zipcode = 1231;
+        if($model->load(Yii::$app->request->post())){
+        //     echo "<pre>";
+        //    print_r(Yii::$app->request->post());
+        //     print_r($model->getAttributes());
+        //    echo "</pre>";
+
+           $order = new Orders();
+           $order->firstname = $model->firstName;
+           $order->lastname = $model->lastName;
+           $order->email = $model->email;
+           $order->create_by = $user->getId();
+           $order->created_at = date("YYYY-MM-DD HH:mm:ss");
+
+           if($order->save()){
+               $model->order_id = $order->id;
+               if( $model->save()){
+                Yii::$app->session->setFlash("success", "Checkout successfully!");
+               }else {
+                //    print_r($model->getErrors());
+                //    exit;
+                Yii::$app->session->setFlash("error", "Failed to checkout!");
+               }
+           }else {
+            // print_r($order->getErrors());
+            // exit;
+               Yii::$app->session->setFlash("error", "Failed to checkout!");
+           }
+
+            return $this->redirect(Yii::$app->request->referrer);
+        }
+        
         $this->layout = "homepage";
-        return $this->render('page-checkout');
+        return $this->render('page-checkout', [
+            'model'=>$model,
+           
+        ]);
+        
+
     }
 
     /**

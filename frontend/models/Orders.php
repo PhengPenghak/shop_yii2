@@ -1,6 +1,7 @@
 <?php
 
 namespace app\models;
+use common\models\Order;
 
 use Yii;
 
@@ -34,7 +35,8 @@ class Orders extends \yii\db\ActiveRecord
     {
         return [
             [['total_price'], 'number'],
-            [['status', 'firstname', 'lastname', 'email', 'transaction', 'created_at', 'create_by'], 'string', 'max' => 255],
+            [['create_by'], 'integer'],
+            [['status', 'firstname', 'lastname', 'email', 'transaction', 'created_at'], 'string', 'max' => 255],
         ];
     }
 
@@ -42,6 +44,7 @@ class Orders extends \yii\db\ActiveRecord
      * {@inheritdoc}
      */
     public function attributeLabels()
+    
     {
         return [
             'id' => 'ID',
@@ -53,6 +56,8 @@ class Orders extends \yii\db\ActiveRecord
             'transaction' => 'Transaction',
             'created_at' => 'Created At',
             'create_by' => 'Create By',
+            
         ];
+        
     }
 }

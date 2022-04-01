@@ -3,8 +3,8 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+use common\widgets\Alert;
 use frontend\assets\AppAsset;
-use app\widgets\Alert;
 use yii\bootstrap4\Breadcrumbs;
 use yii\bootstrap4\Html;
 use yii\bootstrap4\Nav;
@@ -29,6 +29,7 @@ AppAsset::register($this);
       <?= $this->render('header'); ?>
 
   <main>
+    <?= Alert::widget() ?>
     <?=
       $content
     ?>

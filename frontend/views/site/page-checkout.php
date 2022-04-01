@@ -1,6 +1,12 @@
 <?php
 
+use yii\bootstrap4\ActiveForm;
+use yii\bootstrap4\Html;
 use yii\helpers\Url;
+$user = Yii::$app->user->identity;
+
+// print_r($user);
+// exit;
 ?>
 <?php $base_url = Yii::getAlias("@web");  ?>
 <!-- <script
@@ -8,7 +14,7 @@ use yii\helpers\Url;
 </script> -->
 
 <div class="container">
-    <form>
+    <?php $form = ActiveForm::begin([]) ?>
         <div class="row">
             <div class="col">
                 <div class="card mt-3">
@@ -16,20 +22,23 @@ use yii\helpers\Url;
                         <label for="inputEmail4">Account Information</label>
                     </div>
                     <div class="card-body">
-                        <div class="form-row">
-                            <div class="form-group col-md-6">
+                        <?= $form->field($model, 'firstName')->textInput() ?> 
+                        <?= $form->field($model, 'lastName')->textInput() ?> 
+                        <?= $form->field($model, 'email')->textInput() ?> 
+                        <!-- <div class="form-row"> -->
+                            <!-- <div class="form-group col-md-6">
                                 <label for="inputEmail4">First Name</label>
-                                <input type="email" class="form-control" id="inputEmail4" placeholder="">
-                            </div>
-                            <div class="form-group col-md-6">
+                                <input type="text" class="form-control" id="inputEmail4" placeholder="" value="<?= $user->firstname?>">
+                            </div> -->
+                            <!-- <div class="form-group col-md-6">
                                 <label for="inputPassword4">Last Name</label>
-                                <input type="text" class="form-control" id="inputPassword4" placeholder="">
-                            </div>
-                        </div>
+                                <input type="text" class="form-control" id="inputPassword4" placeholder="" value="<?= $user->lastname?>">
+                            </div> -->
+                        <!-- </div>
                         <div class="form-group">
                             <label for="inputAddress">Email</label>
-                            <input type="text" class="form-control" id="inputAddress" placeholder="Example@gmail.com">
-                        </div>
+                            <input type="text" class="form-control" id="inputAddress" placeholder="Example@gmail.com" value="<?= $user->email?>">
+                        </div> -->
                     </div>
 
                 </div>
@@ -38,7 +47,14 @@ use yii\helpers\Url;
                         <label for="inputEmail4">Address Information</label>
                     </div>
                     <div class="card-body">
-                        <div class="form-group">
+
+                        <?= $form->field($model, 'address')->textInput() ?>
+                        <?= $form->field($model, 'city')->textInput() ?>
+                        <?= $form->field($model, 'state')->textInput() ?>
+                        <?= $form->field($model, 'country')->textInput() ?>
+                        <?= $form->field($model, 'zipcode')->textInput() ?>
+
+                        <!-- <div class="form-group">
                             <label for="inputAddress">Address</label>
                             <input type="text" class="form-control" id="inputAddress" placeholder="">
                         </div>
@@ -57,9 +73,10 @@ use yii\helpers\Url;
                         <div class="form-group">
                             <label for="inputAddress">Zipcode</label>
                             <input type="text" class="form-control" id="inputAddress" placeholder="">
-                        </div>
+                        </div> -->
                     </div>
                 </div>
+               
 
             </div>
             <div class="col mt-3">
@@ -86,14 +103,14 @@ use yii\helpers\Url;
                         <div id=" paypal-button-container">
                         </div>
                         <p class="text-left mt-3">
-                            <button class="btn btn-outline-secondary">Checkout </button>
+                            <?= Html::submitButton('Checkout', ['class' => 'btn btn-outline-secondary']) ?>
                         </p>
                     </div>
                 </div>
 
             </div>
         </div>
-    </form>
+    <?php ActiveForm::end(); ?>
 </div>
 <!-- <script>
 paypal.Buttons().render('#paypal-button-container');
