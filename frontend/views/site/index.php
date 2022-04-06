@@ -1,4 +1,4 @@
-<?=
+<?php
 
 $base_url = Yii::getAlias("@web");
 

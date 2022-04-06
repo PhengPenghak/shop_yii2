@@ -311,15 +311,12 @@ class SiteController extends Controller
     }
     public function actionCheckout()
     {
-
-
         $model = new OrderAddress();
         $user = Yii::$app->user->identity;   
         $model->firstName = $user->firstname;
         $model->lastName = $user->lastname;
         $model->email = $user->email;
         $totalPrice = (float)$this->getCartTotalPrice();
-        
         if($model->load(Yii::$app->request->post())){
            $order = new Orders();
            $order->firstname = $model->firstName;
@@ -328,9 +325,24 @@ class SiteController extends Controller
            $order->create_by = $user->getId();
            $order->created_at = date("YYYY-MM-DD HH:mm:ss");
            if($order->save()){
+
+                $current_cart = Cart::find()->where(['user_id'=>Yii::$app->user->identity->id])->all();
+                if(!empty($current_cart)){
+                    foreach ($current_cart as $key => $value) {
+                        $item = new OrderItems();
+                        $item->order_id = $order->id;
+                        $item->product_id = $value->product_id;
+                        $item->quantity = $value->quantity;
+                        $item->unit_price = $value->unit_price;
+                        $item->total_price = $value->total_price;
+                        $item->save();
+                    }
+                }
+                Cart::deleteAll(['user_id'=>Yii::$app->user->identity->id]);
+
                $model->order_id = $order->id;
-                 if( $model->save()){
-                Yii::$app->session->setFlash("success", "Checkout successfully!");
+                if( $model->save()){
+                    Yii::$app->session->setFlash("success", "Checkout successfully!");
                }
                else {
              
@@ -343,13 +355,23 @@ class SiteController extends Controller
            }
             return $this->redirect(Yii::$app->request->referrer);
         }
-        
+
+
+        if ($this->request->isAjax && $this->request->isPost) {
+            $userId = Yii::$app->user->id;
+            $profile = Yii::$app->user->identity->username;
+            $carts = Cart::find()->where(['user_id' => $userId])->all();
+           
+        }
     
+
+      
+            
         $this->layout = "homepage";
 
         $current_user = Yii::$app->user->identity->id;
         $carts = Yii::$app->db->createCommand(
-            "SELECT  cart.*, product.`name`, product.image_url, product.price
+            "SELECT  cart.*, product.`name`, product.image_url, product.price,product.id as pro_id
             FROM cart
             INNER JOIN product ON product.id = cart.product_id 
             WHERE cart.user_id = " . $current_user
@@ -437,8 +459,6 @@ class SiteController extends Controller
             }
         }
     }
-
-
 
     /**
      * TODO: It should be actionCart

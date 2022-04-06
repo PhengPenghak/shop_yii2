@@ -9,12 +9,13 @@ $user = Yii::$app->user->identity;
 // exit;
 ?>
 <?php $base_url = Yii::getAlias("@web");  ?>
-<!-- <script
-    src="https://www.paypal.com/sdk/js?client-id=AbRk2q_sjpztKSLPgjJpKZDC8eXmUzk5LM8Lv61_E2wkjtMFuxuUmiJW3mNmQULgQ-of3k4ZmafKQsBB">
-</script> -->
+
 
 <div class="container">
-    <?php $form = ActiveForm::begin([]) ?>
+
+    <?php $form = ActiveForm::begin([
+        "id" => "checkout-form"
+    ]) ?>
     <div class="row">
         <div class="col">
             <div class="card mt-3">
@@ -58,12 +59,13 @@ $user = Yii::$app->user->identity;
                             <th scope="col">#</th>
                             <th scope="col">Product Image</th>
                             <th scope="col">Product Name</th>
+                            <th scope="col">QTY</th>
                             <th scope="col">Price</th>
                         </tr>
                     </thead>
                     <?php foreach ($carts as $key => $cart) : ?>
 
-                        <tbody>
+                        <tbody class="product_single" data-id = <?= $cart['pro_id']?>>
                             <tr>
                                 <th scope="row"></th>
                                 <td>
@@ -71,6 +73,9 @@ $user = Yii::$app->user->identity;
                                 </td>
                                 <td>
                                     <?= $cart['name'] ?>
+                                </td>
+                                <td>
+                                    <?= $cart['quantity'] ?>
                                 </td>
                                 <td>
                                     $<?= $cart['unit_price'] ?>
@@ -89,14 +94,66 @@ $user = Yii::$app->user->identity;
                     <div id=" paypal-button-container">
                     </div>
                     <p class="text-left mt-3">
-                        <?= Html::submitButton('Place Order', ['class' => 'btn btn-outline-secondary ']) ?>
+
+                        <?= Html::submitButton('Place Order', ['class' => 'btn btn-outline-secondary delete_all_cart_item ', 'id'=>'checkout-cart']) ?>
                     </p>
+                  
                 </div>
             </div>
         </div>
     </div>
     <?php ActiveForm::end(); ?>
 </div>
-<!-- <script>
-paypal.Buttons().render('#paypal-button-container');
-</script> -->
+
+<?php 
+$checkout = Url::to(['site/checkout']);
+    $script = <<< JS
+    //     $('#checkout-cart').click(function(e){
+    //         e.preventDefault();
+    //         var id = $('.product_single').data('id');
+    //         // console.log('hi');
+    //         // $.ajax({
+    //         //     url: "$base_url"+"/site/checkout",
+    //         //     method:'POST',
+    //         //     data: {
+    //         //         id:id,
+    //         //         action: 'checkout'
+    //         //     }
+    //         //     success: function(res){
+    //         //     var data = JSON.parse(res);
+    //         //     console.log(data);
+    //         //     //   if(data['status'] == 'success'){
+    //         //     //   }else{
+    //         //     //     alter(data['message']);
+    //         //     //   } 
+    //         //     },
+            
+    //         //     error: function(err){
+    //         //     console.log(err);
+    //         //     }
+    //         // });
+    //         $.ajax({
+    //             url: "$base_url"+"/site/checkout",
+    //             method: 'POST',
+    //             data: {
+    //                 id: id,
+    //                 action: 'remove_cart_item',
+    //             },
+    //             success: function(res){
+    //                 var data = JSON.parse(res);
+    //                 console.log(data);
+    //                 // if(data.success){
+    //                 //     $("#cart-item-"+id).remove();
+    //                 //     $('#cart-subtotal-price').html(data.total_price)
+    //                 //     $('#cart-total-price').html(data.total_price)
+    //                 // }
+    //             },
+    //             error: function(err){
+    //                 console.log(err);
+    //             }
+    // });     
+    //     })
+    JS;
+    $this->registerJs($script);
+
+?>

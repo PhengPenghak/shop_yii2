@@ -11,7 +11,7 @@ $totalCart = Cart::find()
     ->select(['SUM(quantity) quantity'])
     ->where(['user_id' => $current_user])
     ->one();
-$totalCart = $totalCart->quantity;
+$totalCart = (int)$totalCart->quantity;
 
 ?>
 <header class="header_section">

@@ -28,8 +28,8 @@ class OrderItems extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['product_id', 'quantity'], 'integer'],
-            [['product_name'], 'string', 'max' => 255],
+            [['order_id','product_id', 'quantity'], 'integer'],
+            [['unit_price', 'total_price'], 'number']
         ];
     }
 
@@ -40,7 +40,6 @@ class OrderItems extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'product_name' => 'Product Name',
             'product_id' => 'Product ID',
             'quantity' => 'Quantity',
         ];

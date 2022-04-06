@@ -7,10 +7,6 @@ body {
     font-size: 14px
 }
 
-.container-fluid {
-    margin-top: 70px
-}
-
 .card-body {
     -ms-flex: 1 1 auto;
     flex: 1 1 auto;
