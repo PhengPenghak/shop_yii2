@@ -27,6 +27,7 @@ use yii\base\Model;
 use yii\web\NotFoundHttpException;
 use app\models\OrderAddress;
 use common\models\User;
+use yii\helpers\ArrayHelper;
 
 /**
  * Site controller
@@ -281,10 +282,8 @@ class SiteController extends Controller
     }
     public function actionProduct()
     {
-
         $product = Product::find()->all();
         $this->layout = "homepage";
-
         return $this->render('product', [
             'product' => $product,
         ]);
@@ -300,7 +299,6 @@ class SiteController extends Controller
     public function actionProductDetail($id)
     {
         $model = $this->findProductModel($id);
-
         $this->layout = "homepage";
         return $this->render('product-detail', [
             'model' => $model,
@@ -313,57 +311,60 @@ class SiteController extends Controller
     }
     public function actionCheckout()
     {
-        
+
+
         $model = new OrderAddress();
-        $user = Yii::$app->user->identity;
-       
+        $user = Yii::$app->user->identity;   
         $model->firstName = $user->firstname;
         $model->lastName = $user->lastname;
         $model->email = $user->email;
-
-        // $model->address = "Siem reap";
-        // $model->city = "Siem Reap";
-        // $model->state = "Phnom Penh";
-        // $model->country = "Cambodia";
-        // $model->zipcode = 1231;
+        $totalPrice = (float)$this->getCartTotalPrice();
+        
         if($model->load(Yii::$app->request->post())){
-        //     echo "<pre>";
-        //    print_r(Yii::$app->request->post());
-        //     print_r($model->getAttributes());
-        //    echo "</pre>";
-
            $order = new Orders();
            $order->firstname = $model->firstName;
            $order->lastname = $model->lastName;
            $order->email = $model->email;
            $order->create_by = $user->getId();
            $order->created_at = date("YYYY-MM-DD HH:mm:ss");
-
            if($order->save()){
                $model->order_id = $order->id;
-               if( $model->save()){
+                 if( $model->save()){
                 Yii::$app->session->setFlash("success", "Checkout successfully!");
-               }else {
-                //    print_r($model->getErrors());
-                //    exit;
+               }
+               else {
+             
                 Yii::$app->session->setFlash("error", "Failed to checkout!");
                }
-           }else {
-            // print_r($order->getErrors());
-            // exit;
+           }
+           else {
+           
                Yii::$app->session->setFlash("error", "Failed to checkout!");
            }
-
             return $this->redirect(Yii::$app->request->referrer);
         }
         
+    
         $this->layout = "homepage";
-        return $this->render('page-checkout', [
-            'model'=>$model,
-           
-        ]);
-        
 
+        $current_user = Yii::$app->user->identity->id;
+        $carts = Yii::$app->db->createCommand(
+            "SELECT  cart.*, product.`name`, product.image_url, product.price
+            FROM cart
+            INNER JOIN product ON product.id = cart.product_id 
+            WHERE cart.user_id = " . $current_user
+        )->queryAll();
+        $totalPrice = (float)$this->getCartTotalPrice();
+        $totalCart = (int)Cart::find(['user_id' => $current_user])->count();
+        return $this->render('page-checkout', 
+        [
+            'model' => $model,
+            'carts' => $carts, 
+            'total_price' => $totalPrice, 
+            'total_cart' => $totalCart
+        ]
+    );
+      
     }
 
     /**
@@ -374,7 +375,6 @@ class SiteController extends Controller
     public function actionCart()
     {
         if ($this->request->isAjax) {
-
 
             if ($this->request->post('action') == 'remove_cart_item') {
                 $id = $this->request->post('id');
@@ -413,7 +413,7 @@ class SiteController extends Controller
                 // exit;
                 $cart = Cart::find()->where(['product_id' => $id, 'user_id' => $userId])
                     ->one();
-                if ($cart) {
+                if ($cart) {    
                     $cart->quantity++;
                 } else {
                     $cart = new Cart();
@@ -437,6 +437,9 @@ class SiteController extends Controller
             }
         }
     }
+
+
+
     /**
      * TODO: It should be actionCart
      *

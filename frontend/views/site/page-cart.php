@@ -128,7 +128,7 @@ $base_url = Yii::getAlias("@web");
 <div class="container-fluid">
     <div class="row">
         <aside class="col-lg-9">
-            <div class="card">
+            <div class="card">  
                 <div class="table-responsive">
                     <table class="table table-borderless table-shopping-cart">
                         <thead class="text-muted">
@@ -176,7 +176,7 @@ $base_url = Yii::getAlias("@web");
                                     <?php echo Html::button(
                                             'Remove',
                                             [
-                                                'class' => 'btn btn-danger btn-sm btn-remove-item warning remove_cart_item',
+                                                'class' => 'btn btn-danger btn-sm btn-remove-item warning ',
                                                 'data-id' => $cart['id']
                                             ]
                                         ) ?>
@@ -215,7 +215,7 @@ $base_url = Yii::getAlias("@web");
                     </dl> -->
                     <hr>
                     <a href="<?= Url::to(['site/checkout']) ?>" class="btn btn-out btn-success btn-square btn-main mt-2"
-                        data-abc="true">Checkout</a>
+                        data-abc="true">Proceed to checkout</a>
                 </div>
             </div>
         </aside>
