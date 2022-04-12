@@ -12,16 +12,16 @@ Modal::begin([
 echo "<div id='modalContent'></div>";
 Modal::end();
 ?>
-<?php $base_url = Yii::getAlias("@web");  ?>
+<?php $base_url = Yii::getAlias("@web");?>
 
 
 
-<!-- <div class="col-md-12 text-right custom-footer" style="font-size: 13px; position:fixed; z-index:10;bottom:3%;left:-76%">
+<div class="col-md-12 text-right custom-footer" style="font-size: 13px; position:fixed; z-index:10;bottom:3%;left:-76%">
     <a href="#" class="btn btn-primary">MSI</a>
     <a href="#" class="btn btn-success">ASUS</a>
     <a href="#" class="btn btn-danger">DELL</a>
-</div> -->
-<?php $base_url = Yii::getAlias("@web");  ?>
+</div>
+<?php $base_url = Yii::getAlias("@web");?>
 
 <section class="py-5 bg-light">
     <div class="container px-4 px-lg-5 mt-5">
@@ -29,51 +29,51 @@ Modal::end();
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
             <?php
-            foreach ($product as $key => $pro) { //loop 
-            ?>
+foreach ($product as $key => $pro) { //loop
+    ?>
 
-            <div class="col mb-5 card  product-item " data-id=<?= $pro->id ?>>
+            <div class="col mb-5 card  product-item " data-id=<?=$pro->id?>>
                 <div class="card h-100">
                     <!-- Product image-->
-                    <a href="<?= Url::toRoute(["/site/product-detail", 'id' => $pro->id]) ?>">
-                        <img class="card-img-top" src="<?= $base_url . "/upload/" .  $pro->image_url  ?>" alt=" ..." />
+                    <a href="<?=Url::toRoute(["/site/product-detail", 'id' => $pro->id])?>">
+                        <img class="card-img-top" src="<?=$base_url . "/upload/" . $pro->image_url?>" alt=" ..." />
                     </a>
                     <!-- Product details-->
                     <div class="card-body p-4">
                         <div class="text-center">
                             <!-- Product name-->
-                            <h5 class="fw-bolder"><?= $pro->name ?></h5>
+                            <h5 class="fw-bolder"><?=$pro->name?></h5>
                             <!-- Product price-->
-                            $<?= $pro->price ?>
+                            $<?=$pro->price?>
                         </div>
                         <div class="d-flex justify-content-center small text-warning mb-2">
-                            <?php  //loop star
-                                for ($i = 1; $i <= 5; $i++) {
-                                    if ($i < $pro->rate) {
-                                        echo '<i class="fa fa-star" aria-hidden="true" ></i>';
-                                    } else {
-                                        echo '<i class="fa fa-star text-dark" aria-hidden="true"></i>';
-                                    }
-                                }
-                                ?>
+                            <?php //loop star
+    for ($i = 1; $i <= 5; $i++) {
+        if ($i < $pro->rate) {
+            echo '<i class="fa fa-star" aria-hidden="true" ></i>';
+        } else {
+            echo '<i class="fa fa-star text-dark" aria-hidden="true"></i>';
+        }
+    }
+    ?>
                         </div>
                     </div>
                     <!-- Product actions-->
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                         <div class="text-center">
                             <?php
-                                if (Yii::$app->user->isGuest) {
-                                    $url_route = Url::toRoute(['site/login']);
-                                    $url_title = 'Please login to continue';
-                                ?>
-                            <button type="button" value="<?= $url_route ?>" data-title="<?= $url_title ?>"
+if (Yii::$app->user->isGuest) {
+        $url_route = Url::toRoute(['site/login']);
+        $url_title = 'Please login to continue';
+        ?>
+                            <button type="button" value="<?=$url_route?>" data-title="<?=$url_title?>"
                                 class="btn btn-outline-dark triggerModal" style="font-size: 13px;">Add to
                                 cart</button>
                             <?php
-                                } else {
-                                ?>
+} else {
+        ?>
                             <a href="" class="btn btn-outline-dark mt-auto add-to-cart">Add to cart</a>
-                            <?php } ?>
+                            <?php }?>
                             </a>
                         </div>
 
@@ -81,7 +81,7 @@ Modal::end();
                 </div>
             </div>
 
-            <?php } ?>
+            <?php }?>
         </div>
     </div>
 </section>
@@ -110,13 +110,13 @@ $('.add-to-cart').click(function(e) {
         $("#cart-quantity").text(data['totalCart']);
       }else{
         alter(data['message']);
-      } 
+      }
     },
 
     error: function(err){
       console.log(err);
     }
-  });   
+  });
 });
   $(document).on("click",".triggerModal",function(){
     $("#modal").modal("show").find("#modalContent").load($(this).attr("value"));

@@ -3,31 +3,27 @@
 namespace frontend\controllers;
 
 use app\models\Cart;
+use app\models\OrderAddress;
 use app\models\OrderItems;
 use app\models\Orders;
 use backend\models\Product;
-use backend\models\ProductCategory;
-use frontend\models\ResendVerificationEmailForm;
-use frontend\models\VerifyEmailForm;
-use Yii;
-use yii\base\InvalidArgumentException;
-use yii\web\BadRequestHttpException;
-use yii\web\Controller;
-use yii\filters\VerbFilter;
-use yii\filters\AccessControl;
 use common\models\LoginForm;
+use common\models\User;
+use frontend\models\ContactForm;
 use frontend\models\PasswordResetRequestForm;
+use frontend\models\ResendVerificationEmailForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
-use frontend\models\ContactForm;
-use yii\data\ActiveDataProvider;
-use Bar;
+use frontend\models\VerifyEmailForm;
+use Yii;
 use yii\base\Action;
+use yii\base\InvalidArgumentException;
 use yii\base\Model;
+use yii\filters\AccessControl;
+use yii\filters\VerbFilter;
+use yii\web\BadRequestHttpException;
+use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use app\models\OrderAddress;
-use common\models\User;
-use yii\helpers\ArrayHelper;
 
 /**
  * Site controller
@@ -96,15 +92,15 @@ class SiteController extends Controller
      *
      * @return mixed
      */
+
     public function actionIndex()
     {
         $product = Product::find()->all();
         $this->layout = "homepage";
         return $this->render('index', [
-            'product' => $product
+            'product' => $product,
         ]);
     }
-
 
     /**
      * Logs in a user.
@@ -165,7 +161,6 @@ class SiteController extends Controller
      *
      * @return mixed
      */
-
 
     /**
      * Signs user up.
@@ -272,7 +267,7 @@ class SiteController extends Controller
         }
 
         return $this->render('resendVerificationEmail', [
-            'model' => $model
+            'model' => $model,
         ]);
     }
     public function actionAbout()
@@ -289,45 +284,47 @@ class SiteController extends Controller
         ]);
     }
 
-
     public function actionWhy()
     {
         $this->layout = "homepage";
         return $this->render('why');
     }
 
-    public function actionProductDetail($id)
-    {
-        $model = $this->findProductModel($id);
-        $this->layout = "homepage";
-        return $this->render('product-detail', [
-            'model' => $model,
-        ]);
-    }
     public function actionTestimonial()
     {
         $this->layout = "homepage";
         return $this->render('testimonial');
     }
+    public function actionProductDetail($id)
+    {
+
+        $model = $this->findProductModel($id);
+        $this->layout = "homepage";
+
+        return $this->render('product-detail', [
+            'model' => $model,
+        ]);
+
+    }
     public function actionCheckout()
     {
         $model = new OrderAddress();
-        $user = Yii::$app->user->identity;   
+        $user = Yii::$app->user->identity;
         $model->firstName = $user->firstname;
         $model->lastName = $user->lastname;
         $model->email = $user->email;
-        $totalPrice = (float)$this->getCartTotalPrice();
-        if($model->load(Yii::$app->request->post())){
-           $order = new Orders();
-           $order->firstname = $model->firstName;
-           $order->lastname = $model->lastName;
-           $order->email = $model->email;
-           $order->create_by = $user->getId();
-           $order->created_at = date("YYYY-MM-DD HH:mm:ss");
-           if($order->save()){
+        $totalPrice = (float) $this->getCartTotalPrice();
+        if ($model->load(Yii::$app->request->post())) {
+            $order = new Orders();
+            $order->firstname = $model->firstName;
+            $order->lastname = $model->lastName;
+            $order->email = $model->email;
+            $order->create_by = $user->getId();
+            $order->created_at = date("YYYY-MM-DD HH:mm:ss");
+            if ($order->save()) {
 
-                $current_cart = Cart::find()->where(['user_id'=>Yii::$app->user->identity->id])->all();
-                if(!empty($current_cart)){
+                $current_cart = Cart::find()->where(['user_id' => Yii::$app->user->identity->id])->all();
+                if (!empty($current_cart)) {
                     foreach ($current_cart as $key => $value) {
                         $item = new OrderItems();
                         $item->order_id = $order->id;
@@ -338,61 +335,53 @@ class SiteController extends Controller
                         $item->save();
                     }
                 }
-                Cart::deleteAll(['user_id'=>Yii::$app->user->identity->id]);
+                Cart::deleteAll(['user_id' => Yii::$app->user->identity->id]);
 
-               $model->order_id = $order->id;
-                if( $model->save()){
+                $model->order_id = $order->id;
+                if ($model->save()) {
                     Yii::$app->session->setFlash("success", "Checkout successfully!");
-               }
-               else {
-             
+                } else {
+
+                    Yii::$app->session->setFlash("error", "Failed to checkout!");
+                }
+            } else {
+
                 Yii::$app->session->setFlash("error", "Failed to checkout!");
-               }
-           }
-           else {
-           
-               Yii::$app->session->setFlash("error", "Failed to checkout!");
-           }
+            }
             return $this->redirect(Yii::$app->request->referrer);
         }
-
 
         if ($this->request->isAjax && $this->request->isPost) {
             $userId = Yii::$app->user->id;
             $profile = Yii::$app->user->identity->username;
             $carts = Cart::find()->where(['user_id' => $userId])->all();
-           
+
         }
-    
-
-      
-            
         $this->layout = "homepage";
-
         $current_user = Yii::$app->user->identity->id;
         $carts = Yii::$app->db->createCommand(
             "SELECT  cart.*, product.`name`, product.image_url, product.price,product.id as pro_id
             FROM cart
-            INNER JOIN product ON product.id = cart.product_id 
+            INNER JOIN product ON product.id = cart.product_id
             WHERE cart.user_id = " . $current_user
         )->queryAll();
-        $totalPrice = (float)$this->getCartTotalPrice();
-        $totalCart = (int)Cart::find(['user_id' => $current_user])->count();
-        return $this->render('page-checkout', 
-        [
-            'model' => $model,
-            'carts' => $carts, 
-            'total_price' => $totalPrice, 
-            'total_cart' => $totalCart
-        ]
-    );
-      
+        $totalPrice = (float) $this->getCartTotalPrice();
+        $totalCart = (int) Cart::find(['user_id' => $current_user])->count();
+        return $this->render('page-checkout',
+            [
+                'model' => $model,
+                'carts' => $carts,
+                'total_price' => $totalPrice,
+                'total_cart' => $totalCart,
+            ]
+        );
+
     }
 
     /**
      * TODO: it should be actionDependent
      *
-     * @return 
+     * @return
      */
     public function actionCart()
     {
@@ -402,25 +391,30 @@ class SiteController extends Controller
                 $id = $this->request->post('id');
                 $current_user = Yii::$app->user->identity->id;
                 $model = Cart::findOne($id);
-                if (!$model) return json_encode(['success' => false, 'message' => 'Cart item not found!']);
+                if (!$model) {
+                    return json_encode(['success' => false, 'message' => 'Cart item not found!']);
+                }
 
                 if (!$model->delete()) {
                     return json_encode(['success' => false, 'message' => 'Unable to remove cart item']);
                 }
-                $totalPrice = (float)$this->getCartTotalPrice();
-                $totalCart = (int)Cart::find(['user_id' => $current_user])->count();
+                $totalPrice = (float) $this->getCartTotalPrice();
+                $totalCart = (int) Cart::find(['user_id' => $current_user])->count();
 
                 return json_encode([
                     'success' => true,
                     'total_price' => Yii::$app->formatter->asCurrency($totalPrice),
-                    'total_cart' => $totalCart
+                    'total_cart' => $totalCart,
                 ]);
             }
             if ($this->request->post('action') == 'update_qty') {
                 $cartId = $this->request->post('cartId');
                 $qty = $this->request->post('qty');
                 $model = Cart::findOne($cartId);
-                if (!$model) return json_encode(['status' => false, 'message' => 'no cart item found!']);
+                if (!$model) {
+                    return json_encode(['status' => false, 'message' => 'no cart item found!']);
+                }
+
                 $model->quantity = $qty;
                 if (!$model->update()) {
                     return json_encode(['status' => false, 'message' => 'updated']);
@@ -435,7 +429,7 @@ class SiteController extends Controller
                 // exit;
                 $cart = Cart::find()->where(['product_id' => $id, 'user_id' => $userId])
                     ->one();
-                if ($cart) {    
+                if ($cart) {
                     $cart->quantity++;
                 } else {
                     $cart = new Cart();
@@ -444,7 +438,7 @@ class SiteController extends Controller
                     $cart->quantity = 1;
                 }
                 $cart->unit_price = $product->price;
-                $cart->total_price = $cart->quantity *  $cart->unit_price;
+                $cart->total_price = $cart->quantity * $cart->unit_price;
                 if ($cart->save()) {
                     $current_user = Yii::$app->user->id;
                     $totalCart = Cart::find()
@@ -454,7 +448,7 @@ class SiteController extends Controller
                     $totalCart = $totalCart->quantity;
                     return json_encode(['status' => 'success', 'totalCart' => $totalCart]);
                 } else {
-                    return json_encode(['status' => 'error', 'message' => $cart->getErrors()]);;
+                    return json_encode(['status' => 'error', 'message' => $cart->getErrors()]);
                 }
             }
         }
@@ -473,17 +467,17 @@ class SiteController extends Controller
         $carts = Yii::$app->db->createCommand(
             "SELECT  cart.*, product.`name`, product.image_url, product.price
             FROM cart
-            INNER JOIN product ON product.id = cart.product_id 
+            INNER JOIN product ON product.id = cart.product_id
             WHERE cart.user_id = " . $current_user
         )->queryAll();
-        $totalPrice = (float)$this->getCartTotalPrice();
-        $totalCart = (int)Cart::find(['user_id' => $current_user])->count();
+        $totalPrice = (float) $this->getCartTotalPrice();
+        $totalCart = (int) Cart::find(['user_id' => $current_user])->count();
         return $this->render('page-cart', ['carts' => $carts, 'total_price' => $totalPrice, 'total_cart' => $totalCart]);
     }
     private function getCartTotalPrice()
     {
         $current_user = Yii::$app->user->identity->id;
-        return Yii::$app->db->createCommand("SELECT 
+        return Yii::$app->db->createCommand("SELECT
                 SUM(cart.quantity * product.price) as total_price
                 FROM cart
                 INNER JOIN product ON product.id = cart.product_id
