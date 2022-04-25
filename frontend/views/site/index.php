@@ -3,39 +3,62 @@
 $base_url = Yii::getAlias("@web");
 
 ?>
-<div id="demo" class="carousel slide" data-ride="carousel">
 
-    <!-- Indicators -->
-    <ul class="carousel-indicators">
-        <li data-target="#demo" data-slide-to="0" class="active"></li>
-        <li data-target="#demo" data-slide-to="1"></li>
-        <li data-target="#demo" data-slide-to="2"></li>
-    </ul>
 
-    <!-- The slideshow -->
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="https://dlcdnwebimgs.asus.com/gain/2DBAF7BD-19D9-4F61-BF76-1E389ACC9FAA/fwebp" alt="">
+  <!-- slider section -->
+  <section class="slider_section ">
+      <div id="customCarousel1" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+           
+              <div class="row">
+            
+                
+                  <div class="img-box">
+                    <img src="https://storage-asset.msi.com/global/picture/banner/banner_1644914130b0ed9a75e4b5062effe545d1c43eac8c.jpeg" alt="">
+                  </div>
+               
+              </div>
+           
+          </div>
+          <div class="carousel-item">
+           
+              <div class="row">
+                
+              
+                  <div class="img-box">
+                    <img src="https://storage-asset.msi.com/global/picture/banner/banner_16487190419ef4785266ba9977530b3629d41e328d.jpeg" alt="">
+                  </div>
+              
+              </div>
+           
+          </div>
+          <div class="carousel-item">
+            
+              <div class="row">
+               
+                
+                  <div class="img-box">
+                    <img src="https://storage-asset.msi.com/global/picture/banner/banner_164852300762efa60e844a15758ee24183cc807694.jpeg" alt="">
+                  </div>
+                
+              </div>
+            
+          </div>
         </div>
-        <div class="carousel-item">
-            <img src="https://dlcdnwebimgs.asus.com/gain/9218F5BE-616D-48E0-9289-404DA1C46515/fwebp" alt="Chicago">
-        </div>
-        <div class="carousel-item">
-            <img src="https://dlcdnwebimgs.asus.com/gain/2DBAF7BD-19D9-4F61-BF76-1E389ACC9FAA/fwebp" alt="">
-        </div>
-    </div>
-
-    <!-- Left and right controls -->
-    <a class="carousel-control-prev" href="#demo" data-slide="prev">
-        <span class="carousel-control-prev-icon"></span>
-    </a>
-    <a class="carousel-control-next" href="#demo" data-slide="next">
-        <span class="carousel-control-next-icon"></span>
-    </a>
-
-</div>
-
-
+        <!-- <div class="carousel_btn_box">
+          <a class="carousel-control-prev" href="#customCarousel1" role="button" data-slide="prev">
+            <i class="fa fa-angle-left" aria-hidden="true"></i>
+            <span class="sr-only">Previous</span>
+          </a>
+          <a class="carousel-control-next" href="#customCarousel1" role="button" data-slide="next">
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+            <span class="sr-only">Next</span>
+          </a>
+        </div> -->
+      </div>
+    </section>
+    <!-- end slider section -->
 <div class="row">
     <?php
 
@@ -56,27 +79,27 @@ $base_url = Yii::getAlias("@web");
                 <?php
                 foreach ($product as $key => $pro) { //loop 
                 ?>
-                <div class="col-sm-6 col-lg-4">
-                    <div class="box">
-                        <div class="img-box">
-                            <img src="<?= $base_url . "/upload/" .  $pro->image_url ?>" alt="" class="img-fluid">
-                            <a href="" class="add_cart_btn">
-                                <span>
-                                    Add To Cart
-                                </span>
-                            </a>
-                        </div>
-                        <div class="detail-box">
-                            <h5>
-                                <?= $pro->name ?>
-
-                            </h5>
-                            <div class="product_info">
+                    <div class="col-sm-6 col-lg-4">
+                        <div class="box">
+                            <div class="img-box">
+                                <img src="<?= $base_url . "/upload/" .  $pro->image_url ?>" alt="" class="img-fluid">
+                                <a href="" class="add_cart_btn">
+                                    <span>
+                                        Add To Cart
+                                    </span>
+                                </a>
+                            </div>
+                            <div class="detail-box">
                                 <h5>
-                                    <span>$</span> <?= $pro->price ?>
+                                    <?= $pro->name ?>
+
                                 </h5>
-                                <div class="star_container">
-                                    <?php  //loop star
+                                <div class="product_info">
+                                    <h5>
+                                        <span>$</span> <?= $pro->price ?>
+                                    </h5>
+                                    <div class="star_container">
+                                        <?php  //loop star
                                         for ($i = 1; $i <= 5; $i++) {
                                             if ($i < $pro->rate) {
                                                 echo '<i class="fa fa-star" aria-hidden="true"></i>';
@@ -85,13 +108,13 @@ $base_url = Yii::getAlias("@web");
                                             }
                                         }
                                         ?>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
 
                     </div>
-
-                </div>
                 <?php } ?>
 
 
@@ -132,14 +155,13 @@ $base_url = Yii::getAlias("@web");
                 </div>
                 <div class="col-md-6 px-0">
                     <div class="img-box">
-                        <img src="https://godofpcgame.com/fronts/category/icons/dY4l2ZaowlDMtIS48RqRGc99hGTmFI5AE3GApIJE.png"
-                            alt="">
+                        <img src="https://godofpcgame.com/fronts/category/icons/dY4l2ZaowlDMtIS48RqRGc99hGTmFI5AE3GApIJE.png" alt="">
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
+                                        
     <!-- end about section -->
 
     <!-- why us section -->

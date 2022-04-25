@@ -40,6 +40,7 @@ class Product extends \yii\db\ActiveRecord
             [['rate'], 'number'],
             [['status', 'name', 'created_at', 'created_by', 'image_url', 'description'], 'string', 'max' => 255],
             [['price'], 'string', 'max' => 100],
+            // [['release_date'], 'safe']
             // [['image_url'],'image','extensions' => 'png, jpg, jpeg, webp', 'maxSize' => 10 * 1024 * 1024],
 
         ];
@@ -59,16 +60,18 @@ class Product extends \yii\db\ActiveRecord
             'category_id' => 'Category ID',
             'description' => 'Description',
             'rate' => 'Rate',
-            'created_at' => 'Create Ad',
-            'created_by' => 'Create By',
+            // 'created_at' => 'Create Ad',
+            // 'created_by' => 'Create By',
+            // 'release_date'=> 'Create Date',
         ];
     }
-    //  public function getCategory(){
-    //     return $this->hasOne(ProductCategory::class, ['id' => 'category_id']);
-    // }
-
+   
     public function getImageUrl()
     {
         return str_replace("backend", 'frontend', Yii::$app->request->baseUrl) . "/upload/" . $this->image_url;
+    }
+    public function getCategory(){
+        
+        return $this->hasOne(ProductCategory::class,['id' => 'category_id']);
     }
 }

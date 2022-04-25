@@ -26,12 +26,12 @@ AppAsset::register($this);
 
 <body class="d-flex flex-column h-100">
   <?php $this->beginBody() ?>
-      <?= $this->render('header'); ?>
+  <?= $this->render('header'); ?>
 
   <main>
     <?= Alert::widget() ?>
     <?=
-      $content
+    $content
     ?>
   </main>
   <footer>

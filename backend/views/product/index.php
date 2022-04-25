@@ -74,18 +74,18 @@ $this->params['breadcrumbs'][] = $this->title;
                 ]);
             },
         ],
-        [
-            'attribute' => 'created_at',
-            'format' => 'datetime',
-            'contentOptions' => ['style' => 'white-space:nowrap'],
+        // [
+        //     'attribute' => 'created_at',
+        //     'format' => 'datetime',
+        //     'contentOptions' => ['style' => 'white-space:nowrap'],
 
-        ],
-        [
-            'attribute' => 'created_by',
-            'format' => 'datetime',
-            'contentOptions' => ['style' => 'white-space:nowrap'],
+        // ],
+        // [
+        //     'attribute' => 'created_by',
+        //     'format' => 'datetime',
+        //     'contentOptions' => ['style' => 'white-space:nowrap'],
 
-        ],
+        // ],
 
         // 'created_at:datetime',
         // 'created_by:datetime',

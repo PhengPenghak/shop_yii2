@@ -7,6 +7,7 @@ use app\models\OrderAddress;
 use app\models\OrderItems;
 use app\models\Orders;
 use backend\models\Product;
+use backend\models\ProductCategory;
 use common\models\LoginForm;
 use common\models\User;
 use frontend\models\ContactForm;
@@ -276,6 +277,7 @@ class SiteController extends Controller
         return $this->render('about');
     }
     public function actionProduct()
+
     {
         $product = Product::find()->all();
         $this->layout = "homepage";
@@ -297,10 +299,8 @@ class SiteController extends Controller
     }
     public function actionProductDetail($id)
     {
-
         $model = $this->findProductModel($id);
         $this->layout = "homepage";
-
         return $this->render('product-detail', [
             'model' => $model,
         ]);
@@ -378,6 +378,20 @@ class SiteController extends Controller
 
     }
 
+    public function actionMsi(){
+        $this->layout = "homepage";
+        $product_msi = Product::find()->where(['product_category'=>1])->all();
+        return $this->render('product-msi',[
+            'product_msi'=>$product_msi
+        ]);
+    }
+    public function actionAsus(){
+        $this->layout = "homepage";
+        $product_asus = Product::find()->where(['product_category'=>3])->all();
+        return $this->render('product-asus',[
+            'product_asus'=>$product_asus
+        ]);
+    }
     /**
      * TODO: it should be actionDependent
      *
@@ -427,6 +441,7 @@ class SiteController extends Controller
                 $product = Product::findOne($id);
                 // return $id;
                 // exit;
+
                 $cart = Cart::find()->where(['product_id' => $id, 'user_id' => $userId])
                     ->one();
                 if ($cart) {

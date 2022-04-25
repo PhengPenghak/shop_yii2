@@ -17,13 +17,13 @@ AppAsset::register($this);
 
 
 <body class="d-flex flex-column h-100">
-  <?php $this->beginBody() ?>
-  <main>
-    <?=
-$content
-  ?>
-  </main>
-   <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <?php $this->beginBody() ?>
+    <main>
+        <?=
+        $content
+        ?>
+    </main>
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -43,7 +43,7 @@ $content
         </div>
     </div>
 
-  <?php $this->endBody() ?>
+    <?php $this->endBody() ?>
 </body>
 
 </html>

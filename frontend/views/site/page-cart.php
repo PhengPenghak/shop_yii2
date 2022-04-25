@@ -1,118 +1,118 @@
 <style>
-@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+    @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 
-body {
-    background-color: #eeeeee;
-    font-family: 'Open Sans', serif;
-    font-size: 14px
-}
+    body {
+        background-color: #eeeeee;
+        font-family: 'Open Sans', serif;
+        font-size: 14px
+    }
 
-.card-body {
-    -ms-flex: 1 1 auto;
-    flex: 1 1 auto;
-    padding: 1.40rem
-}
+    .card-body {
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+        padding: 1.40rem
+    }
 
-.img-sm {
-    width: 80px;
-    height: 80px
-}
+    .img-sm {
+        width: 80px;
+        height: 80px
+    }
 
-.itemside .info {
-    padding-left: 15px;
-    padding-right: 7px
-}
+    .itemside .info {
+        padding-left: 15px;
+        padding-right: 7px
+    }
 
-.table-shopping-cart .price-wrap {
-    line-height: 1.2
-}
+    .table-shopping-cart .price-wrap {
+        line-height: 1.2
+    }
 
-.table-shopping-cart .price {
-    font-weight: bold;
-    margin-right: 5px;
-    display: block
-}
+    .table-shopping-cart .price {
+        font-weight: bold;
+        margin-right: 5px;
+        display: block
+    }
 
-.text-muted {
-    color: #969696 !important
-}
+    .text-muted {
+        color: #969696 !important
+    }
 
-a {
-    text-decoration: none !important
-}
+    a {
+        text-decoration: none !important
+    }
 
-.card {
-    position: relative;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #fff;
-    background-clip: border-box;
-    border: 1px solid rgba(0, 0, 0, .125);
-    border-radius: 0px
-}
+    .card {
+        position: relative;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        min-width: 0;
+        word-wrap: break-word;
+        background-color: #fff;
+        background-clip: border-box;
+        border: 1px solid rgba(0, 0, 0, .125);
+        border-radius: 0px
+    }
 
-.itemside {
-    position: relative;
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    width: 100%
-}
+    .itemside {
+        position: relative;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        width: 100%
+    }
 
-.dlist-align {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex
-}
+    .dlist-align {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex
+    }
 
-[class*="dlist-"] {
-    margin-bottom: 5px
-}
+    [class*="dlist-"] {
+        margin-bottom: 5px
+    }
 
-.coupon {
-    border-radius: 1px
-}
+    .coupon {
+        border-radius: 1px
+    }
 
-.price {
-    font-weight: 600;
-    color: #212529
-}
+    .price {
+        font-weight: 600;
+        color: #212529
+    }
 
-.btn.btn-out {
-    outline: 1px solid #fff;
-    outline-offset: -5px
-}
+    .btn.btn-out {
+        outline: 1px solid #fff;
+        outline-offset: -5px
+    }
 
-.btn-main {
-    border-radius: 2px;
-    text-transform: capitalize;
-    font-size: 15px;
-    padding: 10px 19px;
-    cursor: pointer;
-    color: #fff;
-    width: 100%
-}
+    .btn-main {
+        border-radius: 2px;
+        text-transform: capitalize;
+        font-size: 15px;
+        padding: 10px 19px;
+        cursor: pointer;
+        color: #fff;
+        width: 100%
+    }
 
-.btn-light {
-    color: #ffffff;
-    background-color: #F44336;
-    border-color: #f8f9fa;
-    font-size: 12px
-}
+    .btn-light {
+        color: #ffffff;
+        background-color: #F44336;
+        border-color: #f8f9fa;
+        font-size: 12px
+    }
 
-.btn-light:hover {
-    color: #ffffff;
-    background-color: #F44336;
-    border-color: #F44336
-}
+    .btn-light:hover {
+        color: #ffffff;
+        background-color: #F44336;
+        border-color: #F44336
+    }
 
-.btn-apply {
-    font-size: 11px
-}
+    .btn-apply {
+        font-size: 11px
+    }
 </style>
 <?php
 
@@ -124,7 +124,7 @@ $base_url = Yii::getAlias("@web");
 <div class="container-fluid">
     <div class="row">
         <aside class="col-lg-9">
-            <div class="card">  
+            <div class="card">
                 <div class="table-responsive">
                     <table class="table table-borderless table-shopping-cart">
                         <thead class="text-muted">
@@ -138,45 +138,35 @@ $base_url = Yii::getAlias("@web");
                         </thead>
                         <tbody>
                             <?php foreach ($carts as $key => $cart) : ?>
-                            <tr id="cart-item-<?= $cart['id'] ?>" class="update_qty">
-                                <td>
-                                    <figure class="itemside align-items-center">
-                                        <div class="aside"><img src="<?= $base_url . '/upload/' . $cart['image_url'] ?>"
-                                                class="img-sm"></div>
-                                        <figcaption class="info"> <a href="#" class="title text-dark"
-                                                data-abc="true"><?= $cart['name'] ?></a>
-                                            <p class="text-muted small"> <br></p>
-                                        </figcaption>
-                                    </figure>
-                                </td>
-                                <td>
+                                <tr id="cart-item-<?= $cart['id'] ?>" class="update_qty">
+                                    <td>
+                                        <figure class="itemside align-items-center">
+                                            <div class="aside"><img src="<?= $base_url . '/upload/' . $cart['image_url'] ?>" class="img-sm"></div>
+                                            <figcaption class="info"> <a href="#" class="title text-dark" data-abc="true"><?= $cart['name'] ?></a>
+                                                <p class="text-muted small"> <br></p>
+                                            </figcaption>
+                                        </figure>
+                                    </td>
+                                    <td>
 
-                                    <input type="hidden" id="input_unit_price_<?= $key ?>" data-id="<?= $key ?>"
-                                        value="<?= $cart['unit_price'] ?>">
-                                    <div class="price-wrap"><var data-id="<?= $key ?>"
-                                            class="unit_price_ <?= $key ?>"><br>$<?= $cart['unit_price'] ?></var></div>
-                                </td>
-                                <td>
-                                    <input data-cartId="<?= $cart['id'] ?>" id="row_cart_qty_<?= $key ?>"
-                                        data-id="<?= $key ?>" type="number"
-                                        class="form-control text-center input_quantity" value="<?= $cart['quantity'] ?>"
-                                        placeholder="" aria-label="Example text with button addon"
-                                        aria-describedby="button-addon<?= $key ?>">
-                                <td>
-                                    <input class="input_total_price" type="hidden" id="input_total_price_<?= $key ?>"
-                                        data-id="<?= $key ?>" value="<?= $cart['total_price'] ?>">
-                                    <div class="price-wrap"><var data-id="<?= $key ?>"
-                                            class="total_price_<?= $key ?>"><br>$<?= $cart['total_price'] ?></var></div>
-                                </td>
-                                <td>
-                                    <?php echo Html::button(
+                                        <input type="hidden" id="input_unit_price_<?= $key ?>" data-id="<?= $key ?>" value="<?= $cart['unit_price'] ?>">
+                                        <div class="price-wrap"><var data-id="<?= $key ?>" class="unit_price_ <?= $key ?>"><br>$<?= $cart['unit_price'] ?></var></div>
+                                    </td>
+                                    <td>
+                                        <input data-cartId="<?= $cart['id'] ?>" id="row_cart_qty_<?= $key ?>" data-id="<?= $key ?>" type="number" class="form-control text-center input_quantity" value="<?= $cart['quantity'] ?>" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon<?= $key ?>">
+                                    <td>
+                                        <input class="input_total_price" type="hidden" id="input_total_price_<?= $key ?>" data-id="<?= $key ?>" value="<?= $cart['total_price'] ?>">
+                                        <div class="price-wrap"><var data-id="<?= $key ?>" class="total_price_<?= $key ?>"><br>$<?= $cart['total_price'] ?></var></div>
+                                    </td>
+                                    <td>
+                                        <?php echo Html::button(
                                             'Remove',
                                             [
-                                                'class' => 'btn btn-danger btn-sm btn-remove-item warning ',
+                                                'class' => 'btn btn-danger btn-sm  btn-remove-item warning ',
                                                 'data-id' => $cart['id']
                                             ]
                                         ) ?>
-                            </tr>
+                                </tr>
                             <?php endforeach; ?>
                         </tbody>
 
@@ -190,9 +180,7 @@ $base_url = Yii::getAlias("@web");
                 <div class="card-body">
                     <form>
                         <div class="form-group"> <label>Have coupon?</label>
-                            <div class="input-group"> <input type="text" class="form-control coupon" name=""
-                                    placeholder="Coupon code"> <span class="input-group-append"> <button
-                                        class="btn btn-primary btn-apply coupon">Apply</button> </span> </div>
+                            <div class="input-group"> <input type="text" class="form-control coupon" name="" placeholder="Coupon code"> <span class="input-group-append"> <button class="btn btn-primary btn-apply coupon">Apply</button> </span> </div>
                         </div>
                     </form>
                 </div>
@@ -210,8 +198,7 @@ $base_url = Yii::getAlias("@web");
                         <dd class="text-right text-danger ml-3">- $10.00</dd>
                     </dl> -->
                     <hr>
-                    <a href="<?= Url::to(['site/checkout']) ?>" class="btn btn-out btn-success btn-square btn-main mt-2"
-                        data-abc="true">Proceed to checkout</a>
+                    <a href="<?= Url::to(['site/checkout']) ?>" class="btn btn-out btn-success btn-square btn-main mt-2" data-abc="true">Proceed to checkout</a>
                 </div>
             </div>
         </aside>
@@ -260,13 +247,13 @@ $('.input_quantity').on('change keyup', function(e){
             console.log(err);
         }
     });
-})
+});
 
 $('.btn-remove-item').on('click', function(e){
     e.preventDefault();
     var id = $(this).closest('.btn-remove-item').data('id');
     $.ajax({
-        url: "$base_url"+"/index.php?r=site/cart",
+        url: "$base_url"+"/site/cart",
         method: 'POST',
         data: {
             id: id,
@@ -274,7 +261,6 @@ $('.btn-remove-item').on('click', function(e){
         },
         success: function(res){
             var data = JSON.parse(res);
-            console.log(data);
             if(data.success){
                 $("#cart-item-"+id).remove();
                 $('#cart-subtotal-price').html(data.total_price)

@@ -65,7 +65,7 @@ $user = Yii::$app->user->identity;
                     </thead>
                     <?php foreach ($carts as $key => $cart) : ?>
 
-                        <tbody class="product_single" data-id = <?= $cart['pro_id']?>>
+                        <tbody class="product_single" data-id=<?= $cart['pro_id'] ?>>
                             <tr>
                                 <th scope="row"></th>
                                 <td>
@@ -94,10 +94,9 @@ $user = Yii::$app->user->identity;
                     <div id=" paypal-button-container">
                     </div>
                     <p class="text-left mt-3">
-
-                        <?= Html::submitButton('Place Order', ['class' => 'btn btn-outline-secondary delete_all_cart_item ', 'id'=>'checkout-cart']) ?>
+                        <?= Html::submitButton('Place Order', ['class' => 'btn btn-outline-secondary delete_all_cart_item ', 'id' => 'checkout-cart']) ?>
                     </p>
-                  
+
                 </div>
             </div>
         </div>
@@ -105,9 +104,9 @@ $user = Yii::$app->user->identity;
     <?php ActiveForm::end(); ?>
 </div>
 
-<?php 
+<?php
 $checkout = Url::to(['site/checkout']);
-    $script = <<< JS
+$script = <<< JS
     //     $('#checkout-cart').click(function(e){
     //         e.preventDefault();
     //         var id = $('.product_single').data('id');
@@ -154,6 +153,6 @@ $checkout = Url::to(['site/checkout']);
     // });     
     //     })
     JS;
-    $this->registerJs($script);
+$this->registerJs($script);
 
 ?>

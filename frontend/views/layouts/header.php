@@ -111,8 +111,11 @@ if (Yii::$app->user->isGuest) {
                 </div>
      <?php
 }
+
 ?>
             </nav>
         </div>
     </div>
+
 </header>
+

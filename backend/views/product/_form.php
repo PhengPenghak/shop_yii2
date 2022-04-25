@@ -42,8 +42,12 @@ use dosamigos\ckeditor\CKEditor;
         'options' => ['rows' => 6],
         'preset' => 'basic'
     ]) ?>
+
     <?= $form->field($model, 'rate')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'product_category')->dropDownList(['1' => 'Msi', '2' => 'Dell', '3' => 'Asus',], ['prompt' => 'Type Item', 'placeholder' => 'Type Item'])->label(false) ?>
+
     <?= $form->field($model, 'status')->checkbox() ?>
+
     <div class="form-group">
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
