@@ -26,7 +26,6 @@ $user = Yii::$app->user->identity;
                     <?= $form->field($model, 'firstName')->textInput() ?>
                     <?= $form->field($model, 'lastName')->textInput() ?>
                     <?= $form->field($model, 'email')->textInput() ?>
-
                 </div>
 
             </div>
@@ -42,7 +41,6 @@ $user = Yii::$app->user->identity;
                     <?= $form->field($model, 'state')->textInput() ?>
                     <?= $form->field($model, 'country')->textInput() ?>
                     <?= $form->field($model, 'zipcode')->textInput() ?>
-
                 </div>
             </div>
         </div>
@@ -107,52 +105,8 @@ $user = Yii::$app->user->identity;
 <?php
 $checkout = Url::to(['site/checkout']);
 $script = <<< JS
-    //     $('#checkout-cart').click(function(e){
-    //         e.preventDefault();
-    //         var id = $('.product_single').data('id');
-    //         // console.log('hi');
-    //         // $.ajax({
-    //         //     url: "$base_url"+"/site/checkout",
-    //         //     method:'POST',
-    //         //     data: {
-    //         //         id:id,
-    //         //         action: 'checkout'
-    //         //     }
-    //         //     success: function(res){
-    //         //     var data = JSON.parse(res);
-    //         //     console.log(data);
-    //         //     //   if(data['status'] == 'success'){
-    //         //     //   }else{
-    //         //     //     alter(data['message']);
-    //         //     //   } 
-    //         //     },
-            
-    //         //     error: function(err){
-    //         //     console.log(err);
-    //         //     }
-    //         // });
-    //         $.ajax({
-    //             url: "$base_url"+"/site/checkout",
-    //             method: 'POST',
-    //             data: {
-    //                 id: id,
-    //                 action: 'remove_cart_item',
-    //             },
-    //             success: function(res){
-    //                 var data = JSON.parse(res);
-    //                 console.log(data);
-    //                 // if(data.success){
-    //                 //     $("#cart-item-"+id).remove();
-    //                 //     $('#cart-subtotal-price').html(data.total_price)
-    //                 //     $('#cart-total-price').html(data.total_price)
-    //                 // }
-    //             },
-    //             error: function(err){
-    //                 console.log(err);
-    //             }
-    // });     
-    //     })
-    JS;
+
+JS;
 $this->registerJs($script);
 
 ?>

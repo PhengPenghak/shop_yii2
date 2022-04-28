@@ -1,6 +1,5 @@
 <?php
 
-use yii\bootstrap4\LinkPager;
 use yii\bootstrap4\Modal;
 use yii\helpers\Url;
 use yii\rbac\Item;
@@ -26,36 +25,17 @@ Modal::end();
 
 <section class="py-5 bg-light">
   <div class="container px-4 px-lg-5 mt-5">
-    <h2 class="fw-bolder mb-4">PRODUCT MSI</h2>
-    <!-- <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"> -->
+    <h2 class="fw-bolder mb-4">PRODUCT</h2>
+    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
-    <?php
+      <?php
       echo ListView::widget( [
         'dataProvider' => $dataProvider,
         'itemView' => 'product_item',
-        'itemOptions'=>[
-          'class'=>'col-lg-3'
-        ],
-        'pager' => [
-          'firstPageLabel' => 'First',
-          'lastPageLabel' => 'Last',
-          'class'=>LinkPager::class
-      ],
-        'layout'=>'
-        <div class=" row table-responsive">
-        {items}
-        </div>
-        <div class="row">
-        <div class="col-6">
-        {summary}
-        </div>
-        <div class="col-6">
-        {pager}
-        </div>
-        </div>
-        ',
     ] );
       ?>
+
+     
     </div>
   </div>
 </section>

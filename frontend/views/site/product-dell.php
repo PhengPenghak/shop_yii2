@@ -3,6 +3,7 @@
 use yii\bootstrap4\Modal;
 use yii\helpers\Url;
 use yii\rbac\Item;
+use yii\widgets\ListView;
 
 Modal::begin([
   'title' => 'Add User',
@@ -24,11 +25,11 @@ Modal::end();
 
 <section class="py-5 bg-light">
   <div class="container px-4 px-lg-5 mt-5">
-    <h2 class="fw-bolder mb-4">PRODUCT ASUS</h2>
+    <h2 class="fw-bolder mb-4">PRODUCT DELL</h2>
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
 
       <?php
-      foreach ($product_asus as $key => $pro) { //loop
+      foreach ($product_dell as $key => $pro) { //loop
       ?>
         <div class="col mb-5 card  product-item " data-id=<?= $pro->id ?>>
           <div class="card h-100">
@@ -45,7 +46,6 @@ Modal::end();
                 <!-- Product price-->
                 $<?= $pro->price ?>
               </div>
-              
               <div class="d-flex justify-content-center small text-warning mb-2">
                 <?php //loop star
                 for ($i = 1; $i <= 5; $i++) {
@@ -83,6 +83,7 @@ Modal::end();
       <?php } ?>
     </div>
   </div>
+  
 </section>
 
 <?php

@@ -1,8 +1,10 @@
 <?php
 
+use yii\bootstrap4\LinkPager;
 use yii\bootstrap4\Modal;
 use yii\helpers\Url;
 use yii\rbac\Item;
+use yii\widgets\ListView;
 
 Modal::begin([
   'title' => 'Add User',
@@ -17,71 +19,47 @@ Modal::end();
 <div class="col-md-12 text-right custom-footer" style="font-size: 13px; position:fixed; z-index:10;bottom:3%;left:-76%">
   <a href="<?= Url::to(['site/product']) ?>" class="btn btn-info">ALL</a>
   <a href="<?= Url::to(['site/msi']) ?>" class="btn btn-info">MSI</a>
-  <a href="<?= Url::to(['site/product']) ?>" class="btn btn-info">ASUS</a>
-  <a href="<?= Url::to(['site/product']) ?>" class="btn btn-info">DELL</a>
+  <a href="<?= Url::to(['site/asus']) ?>" class="btn btn-info">ASUS</a>
+  <a href="<?= Url::to(['site/dell']) ?>" class="btn btn-info">DELL</a>
 </div>
 <?php $base_url = Yii::getAlias("@web"); ?>
 
 <section class="py-5 bg-light">
   <div class="container px-4 px-lg-5 mt-5">
     <h2 class="fw-bolder mb-4">PRODUCT</h2>
-    <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+    <!-- <div class="gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"> -->
 
-      <?php
-      foreach ($product as $key => $pro) { //loop
-      ?>
-        <div class="col mb-5 card  product-item " data-id=<?= $pro->id ?>>
-          <div class="card h-100">
-            <!-- Product image-->
-            <a href="<?= Url::toRoute(["/site/product-detail", 'id' => $pro->id]) ?>">
-              <img class="card-img-top" src="<?= $base_url . "/upload/" . $pro->image_url ?>" alt=" ..." />
-            </a>
-            <!-- Product details-->
-            <div class="card-body p-4">
-              <div class="text-center">
-                <!-- Product name-->
-                <h5 class="fw-bolder"><?= $pro->name ?></h5>
-                <h6><?= $pro->description ?></h6>
-                <!-- Product price-->
-                $<?= $pro->price ?>
-              </div>
-              <div class="d-flex justify-content-center small text-warning mb-2">
-                <?php //loop star
-                for ($i = 1; $i <= 5; $i++) {
-                  if ($i < $pro->rate) {
-                    echo '<i class="fa fa-star" aria-hidden="true" ></i>';
-                  } else {
-                    echo '<i class="fa fa-star text-dark" aria-hidden="true"></i>';
-                  }
-                }
-                ?>
-              </div>
-            </div>
-            <!-- Product actions-->
-            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-              <div class="text-center">
-                <?php
-                if (Yii::$app->user->isGuest) {
-                  $url_route = Url::toRoute(['site/login']);
-                  $url_title = 'Please login to continue';
-                ?>
-                  <button type="button" value="<?= $url_route ?>" data-title="<?= $url_title ?>" class="btn btn-outline-dark triggerModal" style="font-size: 13px;">Add to
-                    cart</button>
-                <?php
-                } else {
-                ?>
-                  <a href="" class="btn btn-outline-dark mt-auto add-to-cart">Add to cart</a>
-                <?php } ?>
-                </a>
-              </div>
-
-            </div>
-          </div>
+    <?php
+      echo ListView::widget( [
+        'dataProvider' => $dataProvider,
+        'itemView' => 'product_item',
+        'itemOptions'=>[
+          'class'=>'col-lg-3'
+        ],
+        'pager' => [
+          'firstPageLabel' => 'First',
+          'lastPageLabel' => 'Last',
+          'class'=>LinkPager::class
+      ],
+        'layout'=>'
+        <div class=" row table-responsive">
+        {items}
         </div>
+        <div class="row">
+        <div class="col-6">
+        {summary}
+        </div>
+        <div class="col-6">
+        {pager}
+        </div>
+        </div>
+        ',
+    ] );
+      ?>
 
-      <?php } ?>
     </div>
   </div>
+  
 </section>
 
 <?php

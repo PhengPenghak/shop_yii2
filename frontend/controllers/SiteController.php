@@ -1,7 +1,6 @@
 <?php
 
 namespace frontend\controllers;
-
 use app\models\Cart;
 use app\models\OrderAddress;
 use app\models\OrderItems;
@@ -25,6 +24,8 @@ use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider as DataArrayDataProvider;
 
 /**
  * Site controller
@@ -273,16 +274,22 @@ class SiteController extends Controller
     }
     public function actionAbout()
     {
+        
         $this->layout = "homepage";
         return $this->render('about');
     }
     public function actionProduct()
 
     {
-        $product = Product::find()->all();
+        $dataProvider = new ActiveDataProvider([
+            'query'=>Product::find(),
+        ]);
+        $dataProvider->setPagination(['pageSize'=>8]);
+        $model = Product::find()->one();
         $this->layout = "homepage";
         return $this->render('product', [
-            'product' => $product,
+            'model' => $model,
+            'dataProvider'=>$dataProvider
         ]);
     }
 
@@ -375,14 +382,19 @@ class SiteController extends Controller
                 'total_cart' => $totalCart,
             ]
         );
-
     }
-
     public function actionMsi(){
+        $dataProvider = new ActiveDataProvider([
+            'query'=>Product::find(),
+        ]);
+        $dataProvider->setPagination(['pageSize'=>8]);
+
         $this->layout = "homepage";
         $product_msi = Product::find()->where(['product_category'=>1])->all();
         return $this->render('product-msi',[
-            'product_msi'=>$product_msi
+            'product_msi'=>$product_msi,
+            'dataProvider'=> $dataProvider
+
         ]);
     }
     public function actionAsus(){
@@ -390,6 +402,17 @@ class SiteController extends Controller
         $product_asus = Product::find()->where(['product_category'=>3])->all();
         return $this->render('product-asus',[
             'product_asus'=>$product_asus
+        ]);
+    }
+    public function actionDell(){
+        $this->layout = "homepage";
+        // $dataProvider = new ActiveDataProvider([
+        //     'query'=>Product::find()->all()
+        // ]);
+        $product_dell = Product::find()->where(['product_category'=>2])->all();
+        return $this->render('product-dell',[
+            // 'dataProvider' => $dataProvider,
+            'product_dell'=>$product_dell,
         ]);
     }
     /**

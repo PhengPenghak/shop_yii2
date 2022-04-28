@@ -28,6 +28,9 @@ use yii\widgets\ActiveForm;
     <?=$form->field($model, 'image_url')?>
 
     <?=$form->field($model, '_created_at')?>
+    
+    <?=$form->field($model, 'product_category')?>
+
 
 
     <?php // echo $form->field($model, 'description') ?>

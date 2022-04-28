@@ -38,7 +38,7 @@ class Product extends \yii\db\ActiveRecord
             // [['name','price','status','category_id'], 'required'],
             [['image_url'], 'file'],
             [['rate'], 'number'],
-            [['status', 'name', 'created_at', 'created_by', 'image_url', 'description'], 'string', 'max' => 255],
+            [['status', 'name', 'created_at', 'created_by','product_category', 'image_url', 'description'], 'string', 'max' => 255],
             [['price'], 'string', 'max' => 100],
             // [['release_date'], 'safe']
             // [['image_url'],'image','extensions' => 'png, jpg, jpeg, webp', 'maxSize' => 10 * 1024 * 1024],
