@@ -27,8 +27,20 @@ Modal::end();
 <section class="py-5 bg-light">
   <div class="container px-4 px-lg-5 mt-5">
     <h2 class="fw-bolder mb-4">PRODUCT</h2>
-    <!-- <div class="gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"> -->
+    <div class="wrapper">
+    <!-- filter Items -->
+    <!-- <nav>
+      <div class="items">
+        <span class="item active" data-name="all">All</span>
+        <span class="item" data-name="Laptop">Laptop</span>
+        <span class="item" data-name="Accessorise">Accessorise</span>
+        <span class="item" data-name="Hardware">Hardware</span>
+        <span class="item" data-name="camera">Peripharals</span>
+        <span class="item" data-name="headphone">Headphone</span>
 
+      </div> -->
+    </nav>
+  </div>
     <?php
       echo ListView::widget( [
         'dataProvider' => $dataProvider,
@@ -97,6 +109,22 @@ $('.add-to-cart').click(function(e) {
   $(document).on("click",".triggerModal",function(){
     $("#modal").modal("show").find("#modalContent").load($(this).attr("value"));
   });
+  $(click-click).on("click","message",function(){
+    Swal.fire({
+  title: 'Do you want to save the changes?',
+  showDenyButton: true,
+  showCancelButton: true,
+  confirmButtonText: 'Save',
+  denyButtonText: `Don't save`,
+}).then((result) => {
+  /* Read more about isConfirmed, isDenied below */
+  if (result.isConfirmed) {
+    Swal.fire('Saved!', '', 'success')
+  } else if (result.isDenied) {
+    Swal.fire('Changes are not saved', '', 'info')
+  }
+})
+  })
 JS;
 $this->registerJs($script);
 ?>

@@ -64,7 +64,6 @@ Modal::end();
 
 $add_to_cart = Url::to(['site/cart']);
 $script = <<<JS
-
 const base_url = "$base_url";
 $('.add-to-cart').click(function(e) {
   e.preventDefault();

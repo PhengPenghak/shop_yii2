@@ -2,14 +2,15 @@
 
 namespace backend\controllers;
 
-use backend\models\Product;
-use backend\models\ProductSearch;
+
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\helpers\Inflector;
 use yii\web\UploadedFile;
+use backend\models\Product;
+use backend\models\ProductSearch;
 
 /**
  * ProductController implements the CRUD actions for Product model.
@@ -43,7 +44,7 @@ class ProductController extends Controller
     {
         $searchModel = new ProductSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-
+        $dataProvider->setPagination(['pageSize' => 5]);
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,

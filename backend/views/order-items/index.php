@@ -24,10 +24,12 @@ $this->params['breadcrumbs'][] = $this->title;
     ?>
 
     <?= GridView::widget([
+
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
+            
 
             //'id',
             'order_id',
@@ -35,11 +37,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'quantity',
             'unit_price',
             //'total_price',
+
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                }
+                },'header' => 'action',
             ],
         ],
     ]); ?>

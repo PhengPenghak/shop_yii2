@@ -17,7 +17,8 @@ class AppAsset extends AssetBundle
         'css/font-awesome.min.css',
         'css/style.css',
         'css/responsive.css',
-       'css/styles.css'
+        'css/styles.css',
+        'css/navbtn.css'   
         // 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css',
 
     ];

@@ -8,22 +8,6 @@
                     <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                         <i class="fa fa-bars"></i>
                     </button>
-
-                    <!-- Topbar Search -->
-                    <form
-                        class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-                        <div class="input-group">
-                            <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
-                                aria-label="Search" aria-describedby="basic-addon2">
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-search fa-sm"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-
-                    <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
@@ -176,7 +160,7 @@
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo Yii::$app->user->identity->username?>
                                 </span>
                                 <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                    src="https://z-p3-scontent.fpnh5-1.fna.fbcdn.net/v/t39.30808-6/232996325_220817909970563_194295163419584144_n.jpg?_nc_cat=105&ccb=1-5&_nc_sid=8bfeb9&_nc_eui2=AeETag0iDtWGpqm7e3XsJJIIzDUiHzFAI9PMNSIfMUAj0zQfIpwvX_WWiGNSLyu6dOk4fVbeob8vQnZa6m5hkp_5&_nc_ohc=aCtCRSDNBsIAX8xHplv&_nc_zt=23&_nc_ht=z-p3-scontent.fpnh5-1.fna&oh=00_AT8N8KRYjSXRIPPX0TJm3oIU5j_r1N7kVJAYqaeLTLtP1g&oe=62763E6D">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"

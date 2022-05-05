@@ -97,6 +97,7 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
+        
         $product = Product::find()->all();
         $this->layout = "homepage";
         return $this->render('index', [
@@ -290,6 +291,7 @@ class SiteController extends Controller
         return $this->render('product', [
             'model' => $model,
             'dataProvider'=>$dataProvider
+            
         ]);
     }
 

@@ -2,9 +2,9 @@
 
 namespace backend\models;
 
+use backend\models\Product;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\Product;
 
 /**
  * ProductSearch represents the model behind the search form of `backend\models\Product`.
@@ -14,11 +14,14 @@ class ProductSearch extends Product
     /**
      * {@inheritdoc}
      */
+    public $globalSearch;
+    public $start_date;
+    public $end_date;
     public function rules()
     {
         return [
-            [['id', 'category_id'], 'integer'],
-            [['status','name', 'price', 'image_url', 'description'], 'safe'],
+            [['id', 'category_id', 'created_by'], 'integer'],
+            [['status', 'name', 'globalSearch', 'created_date', 'price', 'image_url', 'description'], 'safe'],
             [['rate'], 'number'],
         ];
     }
@@ -62,6 +65,8 @@ class ProductSearch extends Product
             'id' => $this->id,
             'category_id' => $this->category_id,
             'rate' => $this->rate,
+            'created_date' => $this->created_date,
+            'created_by' => $this->created_by,
         ]);
 
         $query->andFilterWhere(['like', 'name', $this->name])
@@ -69,7 +74,11 @@ class ProductSearch extends Product
             ->andFilterWhere(['like', 'status', $this->status])
             ->andFilterWhere(['like', 'price', $this->price])
             ->andFilterWhere(['like', 'image_url', $this->image_url])
-            ->andFilterWhere(['like', 'description', $this->description]);
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'Created_date', $this->created_date]);
+
+        $query->FilterWhere(['like', 'code', $this->globalSearch])
+            ->FilterWhere(['like', 'product.name', $this->globalSearch]);
 
         return $dataProvider;
     }
