@@ -4,5 +4,11 @@ function getYear() {
     var currentYear = currentDate.getFullYear();
     document.querySelector("#displayYear").innerHTML = currentYear;
 }
+$(".triggerModal").click(function () {
+    $("#modal")
+    .modal("show")
+    .find("#modalContent")
+    .load($(this).attr("value"));
 
+});
 getYear();

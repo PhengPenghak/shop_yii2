@@ -1,5 +1,7 @@
 <?php
-	use yii\helpers\Url;
+use yii\helpers\Url;
+$base_url = Yii::getAlias("Web");
+$image_url = str_replace("backend", 'frontend', Yii::$app->request->baseurl);
 ?>
  <!-- Topbar -->
                 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
@@ -157,10 +159,10 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo Yii::$app->user->identity->username?>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo Yii::$app->user->identity->username ?>
                                 </span>
-                                <img class="img-profile rounded-circle"
-                                    src="https://z-p3-scontent.fpnh5-1.fna.fbcdn.net/v/t39.30808-6/232996325_220817909970563_194295163419584144_n.jpg?_nc_cat=105&ccb=1-5&_nc_sid=8bfeb9&_nc_eui2=AeETag0iDtWGpqm7e3XsJJIIzDUiHzFAI9PMNSIfMUAj0zQfIpwvX_WWiGNSLyu6dOk4fVbeob8vQnZa6m5hkp_5&_nc_ohc=aCtCRSDNBsIAX8xHplv&_nc_zt=23&_nc_ht=z-p3-scontent.fpnh5-1.fna&oh=00_AT8N8KRYjSXRIPPX0TJm3oIU5j_r1N7kVJAYqaeLTLtP1g&oe=62763E6D">
+                                <img class="img-profile rounded-circle "
+                                src="<?=$image_url . "/profile/uploads/" . Yii::$app->user->identity->image_url?>" style="object-fit:cover;">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -172,7 +174,7 @@
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Settings
-                                </a>    
+                                </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Activity Log
@@ -190,4 +192,3 @@
                 </nav>
                 <!-- End of Topbar -->
                 <div class="dropdown">
-  

@@ -1,0 +1,37 @@
+.content-body .content-left .pc-brand .brand-title {
+  font-size: 14px;
+  margin-bottom: 18px;
+  font-weight: bold;
+  color: #555555;
+}
+
+.content-body .content-left .pc-brand .brand-lists li img {
+  margin-bottom: 1rem;
+  width: 100px;
+}
+
+@media (max-width: 975px) {
+  .content-system-builder .table thead tr th {
+    white-space: pre;
+  }
+}
+
+
+
+@media (max-width: 975px) {
+  .content-system-builder .table tbody tr th {
+    white-space: pre;
+  }
+}
+
+
+.content-system-builder .table tbody tr td {
+  vertical-align: middle;
+  font-size: 13px;
+}
+
+@media (max-width: 975px) {
+  .content-system-builder .table tbody tr td {
+    white-space: pre;
+  }
+}

@@ -17,9 +17,11 @@ DaterangpickerAsset::register($this);
 
 $this->title = 'Products';
 $this->params['breadcrumbs'][] = $this->title;
+// echo date('Y-m-d H:i:s');
 ?>
     <?php $form = ActiveForm::begin([
     'action' => ['index'],
+
     'method' => 'get',
 
 ]);?>
@@ -80,7 +82,7 @@ Modal::end();
             'attribute' => 'image_url',
             'label' => 'ProductImage',
             'content' => function ($model) {
-                return Html::img($model->imageUrl, ['style' => 'width:150px;']);
+                return Html::img($model->imageUrl, ['style' => 'width:100px;']);
             },
             'contentOptions' => [
                 'style' => 'width:50px;',
@@ -126,50 +128,3 @@ Modal::end();
     ],
 ]);?>
 
-<?php
-
-$script = <<<JS
-
-$(function() {
-
-var is_filter = $("#ordersearch-start_date").val() != '' ? true :false;
-    if(!is_filter){
-        var start = moment().subtract(29, 'days');
-        var end = moment();
-    }else{
-        var start = moment($("#ordersearch-start_date").val());
-        var end = moment($("#ordersearch-end_date").val());
-    }
-function cb(start, end) {
-    $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
-    $("#ordersearch-start_date").val(start.format('YYYY-MM-DD'));
-    $("#ordersearch-end_date").val(end.format('YYYY-MM-DD'));
-}
-
-$('#reportrange').daterangepicker({
-    startDate: start,
-    endDate: end,
-    ranges: {
-       'Today': [moment(), moment()],
-       'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-       'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-       'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-       'This Month': [moment().startOf('month'), moment().endOf('month')],
-       'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-    }
-}, cb);
-
-cb(start, end);
-$(".triggerModal").click(function () {
-        $("#modal")
-        .modal("show")
-        .find("#modalContent")
-        .load($(this).attr("value"));
-
-    });
-
-});
-JS;
-$this->registerJs($script);
-?>
-</div>

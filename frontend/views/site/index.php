@@ -1,3 +1,9 @@
+<div id="container">
+    <label class="switch">
+      <input type="checkbox" onclick="changeMode()">
+      <span class="slider"></span>
+    </label>
+  </div>
 <?php
 
 $base_url = Yii::getAlias("@web");
@@ -10,40 +16,37 @@ $base_url = Yii::getAlias("@web");
       <div id="customCarousel1" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
           <div class="carousel-item active">
-           
               <div class="row">
-            
-                
                   <div class="img-box">
                     <img src="https://storage-asset.msi.com/global/picture/banner/banner_1644914130b0ed9a75e4b5062effe545d1c43eac8c.jpeg" alt="">
                   </div>
-               
+
               </div>
-           
+
           </div>
           <div class="carousel-item">
-           
+
               <div class="row">
-                
-              
+
+
                   <div class="img-box">
                     <img src="https://storage-asset.msi.com/global/picture/banner/banner_16487190419ef4785266ba9977530b3629d41e328d.jpeg" alt="">
                   </div>
-              
+
               </div>
-           
+
           </div>
           <div class="carousel-item">
-            
+
               <div class="row">
-               
-                
+
+
                   <div class="img-box">
                     <img src="https://storage-asset.msi.com/global/picture/banner/banner_164852300762efa60e844a15758ee24183cc807694.jpeg" alt="">
                   </div>
-                
+
               </div>
-            
+
           </div>
         </div>
         <!-- <div class="carousel_btn_box">
@@ -62,10 +65,10 @@ $base_url = Yii::getAlias("@web");
 <div class="row">
     <?php
 
-    use yii\bootstrap4\Html;
-    use yii\helpers\Url;
+use yii\bootstrap4\LinkPager;
+use yii\widgets\ListView;
 
-    ?>
+?>
     <!-- product section -->
 
     <section class="product_section layout_padding">
@@ -76,54 +79,37 @@ $base_url = Yii::getAlias("@web");
                 </h2>
             </div>
             <div class="row">
-                <?php
-                foreach ($product as $key => $pro) { //loop 
-                ?>
-                    <div class="col-sm-6 col-lg-4">
-                        <div class="box">
-                            <div class="img-box">
-                                <img src="<?= $base_url . "/upload/" .  $pro->image_url ?>" alt="" class="img-fluid">
-                                <a href="" class="add_cart_btn">
-                                    <span>
-                                        Add To Cart
-                                    </span>
-                                </a>
-                            </div>
-                            <div class="detail-box">
-                                <h5>
-                                    <?= $pro->name ?>
-
-                                </h5>
-                                <div class="product_info">
-                                    <h5>
-                                        <span>$</span> <?= $pro->price ?>
-                                    </h5>
-                                    <div class="star_container">
-                                        <?php  //loop star
-                                        for ($i = 1; $i <= 5; $i++) {
-                                            if ($i < $pro->rate) {
-                                                echo '<i class="fa fa-star" aria-hidden="true"></i>';
-                                            } else {
-                                                echo '<i class="fa fa-star text-dark" aria-hidden="true"></i>';
-                                            }
-                                        }
-                                        ?>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                <?php } ?>
+            <?php
+echo ListView::widget([
+    'dataProvider' => $dataProvider,
+    'itemView' => 'product_item',
+    'itemOptions' => [
+        'class' => 'col-lg-3',
+    ],
+    'pager' => [
+        'firstPageLabel' => 'First',
+        'lastPageLabel' => 'Last',
+        'class' => LinkPager::class,
+    ],
+    'layout' => '
+        <div class=" row table-responsive">
+        {items}
+        </div>
+        <div class="row">
+        <div class="col-6">
+        {summary}
+        </div>
+        <div class="col-6">
+        {pager}
+        </div>
+        </div>
+        ',
+]);
+?>
 
 
             </div>
-            <div class="btn_box">
-                <a href="<?= Url::to(['site/product']) ?>" class="view_more-link">
-                    View More
-                </a>
-            </div>
+
         </div>
     </section>
 
@@ -161,7 +147,7 @@ $base_url = Yii::getAlias("@web");
             </div>
         </div>
     </section>
-                                        
+
     <!-- end about section -->
 
     <!-- why us section -->
@@ -486,4 +472,6 @@ $base_url = Yii::getAlias("@web");
                 </div>
             </div>
         </div>
+
+
     </section>

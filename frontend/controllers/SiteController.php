@@ -1,12 +1,12 @@
 <?php
 
 namespace frontend\controllers;
+
 use app\models\Cart;
 use app\models\OrderAddress;
 use app\models\OrderItems;
 use app\models\Orders;
 use backend\models\Product;
-use backend\models\ProductCategory;
 use common\models\LoginForm;
 use common\models\User;
 use frontend\models\ContactForm;
@@ -19,13 +19,15 @@ use Yii;
 use yii\base\Action;
 use yii\base\InvalidArgumentException;
 use yii\base\Model;
+use yii\data\ActiveDataProvider;
+use yii\debug\models\search\Profile;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
+use yii\helpers\Inflector;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\data\ActiveDataProvider;
-use yii\data\ArrayDataProvider as DataArrayDataProvider;
+use yii\web\UploadedFile;
 
 /**
  * Site controller
@@ -97,11 +99,18 @@ class SiteController extends Controller
 
     public function actionIndex()
     {
-        
+        $dataProvider = new ActiveDataProvider([
+            'query' => Product::find(),
+        ]);
+        $dataProvider->setPagination(['pageSize' => 8]);
+
         $product = Product::find()->all();
         $this->layout = "homepage";
+
         return $this->render('index', [
             'product' => $product,
+            'dataProvider' => $dataProvider,
+
         ]);
     }
 
@@ -153,7 +162,7 @@ class SiteController extends Controller
 
             return $this->refresh();
         }
-
+        $this->layout = "homepage";
         return $this->render('contact', [
             'model' => $model,
         ]);
@@ -177,6 +186,7 @@ class SiteController extends Controller
             Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
             return $this->goHome();
         }
+        $this->layout = "homepage";
 
         return $this->render('signup', [
             'model' => $model,
@@ -273,25 +283,23 @@ class SiteController extends Controller
             'model' => $model,
         ]);
     }
+
     public function actionAbout()
     {
-        
+
         $this->layout = "homepage";
         return $this->render('about');
     }
     public function actionProduct()
-
     {
         $dataProvider = new ActiveDataProvider([
-            'query'=>Product::find(),
+            'query' => Product::find(),
         ]);
-        $dataProvider->setPagination(['pageSize'=>8]);
-        $model = Product::find()->one();
+        $dataProvider->setPagination(['pageSize' => 8]);
+        $product = Product::find()->where(['product_category' => 2])->all();
         $this->layout = "homepage";
         return $this->render('product', [
-            'model' => $model,
-            'dataProvider'=>$dataProvider
-            
+            'product'=>$product
         ]);
     }
 
@@ -328,8 +336,9 @@ class SiteController extends Controller
             $order->firstname = $model->firstName;
             $order->lastname = $model->lastName;
             $order->email = $model->email;
+            $order->total_price = $totalPrice;
             $order->create_by = $user->getId();
-            $order->created_at = date("YYYY-MM-DD HH:mm:ss");
+            $order->created_at = date("Y-m-d h:i:s");
             if ($order->save()) {
 
                 $current_cart = Cart::find()->where(['user_id' => Yii::$app->user->identity->id])->all();
@@ -372,7 +381,7 @@ class SiteController extends Controller
             "SELECT  cart.*, product.`name`, product.image_url, product.price,product.id as pro_id
             FROM cart
             INNER JOIN product ON product.id = cart.product_id
-            WHERE cart.user_id = " . $current_user
+            WHERE cart.user_id  = " . $current_user
         )->queryAll();
         $totalPrice = (float) $this->getCartTotalPrice();
         $totalCart = (int) Cart::find(['user_id' => $current_user])->count();
@@ -385,36 +394,44 @@ class SiteController extends Controller
             ]
         );
     }
-    public function actionMsi(){
+    public function actionMsi()
+    {
         $dataProvider = new ActiveDataProvider([
-            'query'=>Product::find(),
+            'query' => Product::find(),
         ]);
-        $dataProvider->setPagination(['pageSize'=>8]);
+        $dataProvider->setPagination(['pageSize' => 8]);
 
         $this->layout = "homepage";
-        $product_msi = Product::find()->where(['product_category'=>1])->all();
-        return $this->render('product-msi',[
-            'product_msi'=>$product_msi,
-            'dataProvider'=> $dataProvider
+        $product_msi = Product::find()->where(['product_category' => 1])->all();
+        return $this->render('product-msi', [
+            'product_msi' => $product_msi,
+            'dataProvider' => $dataProvider,
 
         ]);
     }
-    public function actionAsus(){
+    public function actionAsus()
+    {
+        $dataProvider = new ActiveDataProvider([
+            'query' => Product::find(),
+        ]);
+        $dataProvider->setPagination(['pageSize' => 8]);
         $this->layout = "homepage";
-        $product_asus = Product::find()->where(['product_category'=>3])->all();
-        return $this->render('product-asus',[
-            'product_asus'=>$product_asus
+        $product_asus = Product::find()->where(['product_category' => 3])->all();
+        return $this->render('product-asus', [
+            'product_asus' => $product_asus,
+            'dataProvider' => $dataProvider,
         ]);
     }
-    public function actionDell(){
+    public function actionDell()
+    {
         $this->layout = "homepage";
-        // $dataProvider = new ActiveDataProvider([
-        //     'query'=>Product::find()->all()
-        // ]);
-        $product_dell = Product::find()->where(['product_category'=>2])->all();
-        return $this->render('product-dell',[
-            // 'dataProvider' => $dataProvider,
-            'product_dell'=>$product_dell,
+        $dataProvider = new ActiveDataProvider([
+            'query' => Product::find()->all(),
+        ]);
+        $product_dell = Product::find()->where(['product_category' => 2])->all();
+        return $this->render('product-dell', [
+            'dataProvider' => $dataProvider,
+            'product_dell' => $product_dell,
         ]);
     }
     /**
@@ -525,6 +542,46 @@ class SiteController extends Controller
         ")->bindParam("userId", $current_user)->queryScalar();
     }
 
+    public function actionProfile()
+    {
+        $model = new Profile();
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect(['site/login']);
+        }
+
+        $model = User::findOne(Yii::$app->user->id);
+        if ($this->request->isPost && $model->load($this->request->post())) {
+            $imagename = Inflector::slug($model->status) . '-' . time();
+            $model->image_url = UploadedFile::getInstance($model, 'image_url');
+            $upload_path = ("profile/uploads/");
+            if (!empty($model->image_url)) {
+                if (!is_dir($upload_path)) {
+                    mkdir($upload_path, 0777, true);
+                }
+                $model->image_url->saveAs($upload_path . $imagename . '.' . $model->image_url->extension);
+                //save file uploaded to db
+                $model->image_url = $imagename . '.' . $model->image_url->extension;
+            }
+            $userId = Yii::$app->user->id;
+
+            if ($model->save()) {
+                Yii::$app->session->setFlash('success', 'Profile updated successfully');
+            } else {
+                Yii::$app->session->setFlash('error', 'Failed to update profile');
+            }
+
+            return $this->redirect(["site/profile"]);
+        }
+
+        $this->layout = "homepage";
+
+        return $this->render(
+            'profile',
+            [
+                'model' => $model,
+            ]
+        );
+    }
     /**
      * Finds the Product model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.

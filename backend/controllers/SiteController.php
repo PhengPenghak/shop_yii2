@@ -3,6 +3,8 @@
 namespace backend\controllers;
 
 use common\models\LoginForm;
+use frontend\models\SignupForm;
+use SebastianBergmann\CodeCoverage\Report\Html\Renderer;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
@@ -28,7 +30,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index'],
+                        'actions' => ['logout', 'index','chat'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -88,6 +90,20 @@ class SiteController extends Controller
         return $this->render('login', [
             'model' => $model,
         ]);
+      
+    }
+    public function actionSignup()
+    {
+        $model = new SignupForm();
+        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
+            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
+            return $this->goHome();
+        }
+        $this->layout = "homepage";
+
+        return $this->render('signup', [
+            'model' => $model,
+        ]);
     }
 
     /**
@@ -100,5 +116,8 @@ class SiteController extends Controller
         Yii::$app->user->logout();
 
         return $this->goHome();
+    }
+    public function actionChat(){
+        return $this->render('chat');
     }
 }

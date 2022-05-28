@@ -43,15 +43,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'label' => 'ProductImage',
                 'format'=>['html'],
                 'value'=> fn()=>Html::img($model->imageUrl, ['style' => 'width:100px;']),
-
-
-               
-                
             ],
             //'image_url:url',
             'description',
             'rate',
             'product_category',
+            'created_date'
         ],
     ]) ?>
 

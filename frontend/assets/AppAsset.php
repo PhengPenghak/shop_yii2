@@ -18,7 +18,12 @@ class AppAsset extends AssetBundle
         'css/style.css',
         'css/responsive.css',
         'css/styles.css',
-        'css/navbtn.css'   
+        'css/navbtn.css',
+        'css/page-cart.css',
+        'css/profile.css',
+        'css/darkmode.css',
+        'css/leftnavbar.css'
+
         // 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css',
 
     ];
@@ -30,8 +35,9 @@ class AppAsset extends AssetBundle
         'js/jquery-3.4.1.min.js',
         'js/bootstrap.js',
         'js/custom.js',
-        'js/scripts.js'
+        'js/scripts.js',
         // 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js',
+        'js/darkmode.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

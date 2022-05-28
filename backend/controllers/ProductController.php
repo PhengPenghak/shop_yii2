@@ -2,15 +2,14 @@
 
 namespace backend\controllers;
 
-
-use Yii;
-use yii\web\Controller;
-use yii\web\NotFoundHttpException;
-use yii\filters\VerbFilter;
-use yii\helpers\Inflector;
-use yii\web\UploadedFile;
 use backend\models\Product;
 use backend\models\ProductSearch;
+use Yii;
+use yii\filters\VerbFilter;
+use yii\helpers\Inflector;
+use yii\web\Controller;
+use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 /**
  * ProductController implements the CRUD actions for Product model.
@@ -74,6 +73,9 @@ class ProductController extends Controller
         $model = new Product();
         if ($this->request->isPost) {
             if ($model->load($this->request->post())) {
+
+                $model->created_date = date('Y-m-d H:m:s');
+
                 $imagename = Inflector::slug($model->name) . '-' . time();
                 $model->image_url = UploadedFile::getInstance($model, 'image_url');
                 $upload_path = Yii::getAlias("@frontend/web/upload/");
@@ -85,8 +87,9 @@ class ProductController extends Controller
                     }
                     $model->image_url->saveAs($upload_path . $imagename . '.' . $model->image_url->extension);
                     //save file uploaded to db
-                    $model->image_url =  $imagename . '.' . $model->image_url->extension;
+                    $model->image_url = $imagename . '.' . $model->image_url->extension;
                 }
+
                 $model->save(false);
             }
             return $this->redirect(['view', 'id' => $model->id]);
@@ -95,7 +98,7 @@ class ProductController extends Controller
             // $model->loadDefaultValues();
         }
 
-        return $this->render('create', [
+        return $this->renderAjax('create', [
             'model' => $model,
         ]);
     }
@@ -149,6 +152,5 @@ class ProductController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-
 
 }
