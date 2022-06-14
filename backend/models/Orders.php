@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "orders".
  *
  * @property int $id
+ * @property int $product_id
  * @property float|null $total_price
  * @property string|null $status
  * @property string|null $firstname
@@ -34,7 +35,7 @@ class Orders extends \yii\db\ActiveRecord
     {
         return [
             [['total_price'], 'number'],
-            [['create_by'], 'integer'],
+            [['create_by', 'product_id'], 'integer'],
             [['status', 'firstname', 'lastname', 'transaction', 'email', 'created_at'], 'string', 'max' => 255],
         ];
     }
@@ -46,6 +47,7 @@ class Orders extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'product_id' => 'Product_ID',
             'total_price' => 'Total Price',
             'status' => 'Status',
             'firstname' => 'Firstname',

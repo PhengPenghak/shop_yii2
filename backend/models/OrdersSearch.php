@@ -17,7 +17,7 @@ class OrdersSearch extends Orders
     public function rules()
     {
         return [
-            [['id', 'create_by'], 'integer'],
+            [['id', 'create_by', 'product_id'], 'integer'],
             [['total_price'], 'number'],
             [['status', 'firstname', 'lastname', 'transaction', 'email', 'created_at'], 'safe'],
         ];
@@ -62,6 +62,7 @@ class OrdersSearch extends Orders
             'id' => $this->id,
             'total_price' => $this->total_price,
             'create_by' => $this->create_by,
+            'product_id' => $this->product_id,
         ]);
 
         $query->andFilterWhere(['like', 'status', $this->status])

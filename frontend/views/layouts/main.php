@@ -3,7 +3,6 @@
 use frontend\assets\AppAsset;
 use yii\bootstrap4\Html;
 
-
 AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>

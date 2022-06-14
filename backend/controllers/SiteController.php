@@ -30,12 +30,13 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index','chat'],
+                        'actions' => ['logout', 'index', 'chat'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
                 ],
             ],
+
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -90,7 +91,6 @@ class SiteController extends Controller
         return $this->render('login', [
             'model' => $model,
         ]);
-      
     }
     public function actionSignup()
     {
@@ -117,7 +117,8 @@ class SiteController extends Controller
 
         return $this->goHome();
     }
-    public function actionChat(){
+    public function actionChat()
+    {
         return $this->render('chat');
     }
 }

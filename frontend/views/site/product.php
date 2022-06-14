@@ -14,17 +14,9 @@ Modal::end();
 ?>
 <?php $base_url = Yii::getAlias("@web"); ?>
 
-<dev class="py-5 bg-light">
+<section class="py-5 bg-light">
   <div class="container px-4 px-lg-5 mt-5">
-    <div class="row">
-      <h2 class="fw-bolder mb-4">PRODUCT</h2>
-    </div>
-
-
-    <!-- <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center"> -->
-    <div class="col-md-12 text-right custom-footer">
-
-    </div>
+    <h2 class="fw-bolder mb-4">PRODUCT DELL</h2>
 
     <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
       <div class="container">
@@ -33,7 +25,6 @@ Modal::end();
           <div class="row">
             <div class="col-md-2">
               <div class="content-left sticky-top">
-
                 <div class="pc-brand">
                   <h3 class="brand-title border-0">Brand:</h3>
                   <ul class="list-unstyled brand-lists">
@@ -41,15 +32,9 @@ Modal::end();
                       <!-- Brand -->
 
                       <li>
-                        <a href="<?= url::to(['site/asus']) ?>">
+                        <a href="<?= url::to(['site/product']) ?>">
 
                           <img src="https://tkcustomcomputer.com/assets/uploads/brands/3295d1860ddfdc6e625e85371a73e5a8.png" alt="Asus" class="brand-logo">
-                        </a>
-                      </li>
-                      <li>
-                        <a href="<?= url::to(['site/msi']) ?>">
-
-                          <img src="https://tkcustomcomputer.com/assets/uploads/brands/09f26aedf418a9cf2334be6b40715417.png" alt="MSI Laptop" class="brand-logo">
                         </a>
                       </li>
                       <li>
@@ -69,7 +54,12 @@ Modal::end();
                           <img src="https://tkcustomcomputer.com/assets/uploads/brands/5bebd205f77d5e1c3d520aa564507125.png" alt="Asus Zephyrus" class="brand-logo">
                         </a>
                       </li>
+                      <li>
+                        <a href="<?= url::to(['site/dell']) ?>">
 
+                          <img src="https://tkcustomcomputer.com/assets/uploads/brands/09f26aedf418a9cf2334be6b40715417.png" alt="MSI Laptop" class="brand-logo">
+                        </a>
+                      </li>
                       <li>
                         <a href="<?= url::to(['site/dell']) ?>">
 
@@ -93,20 +83,15 @@ Modal::end();
                     </ul>
                   </ul>
                 </div>
-
-
               </div>
             </div>
           </div>
         </div>
       </div>
-
       <?php
-      foreach ($product as $key => $pro) { //loop
+      foreach ($product as $key => $pro) {  //loop
       ?>
-
         <div class="col mb-5 product-item" data-id=<?= $pro->id ?>>
-
           <div class="card h-100">
             <!-- Product image-->
             <a href="<?= Url::toRoute(["/site/product-detail", 'id' => $pro->id]) ?>">
@@ -156,11 +141,9 @@ Modal::end();
         </div>
 
       <?php } ?>
-
     </div>
   </div>
-  </section>
-</dev>
+</section>
 
 <?php
 

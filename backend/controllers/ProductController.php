@@ -62,6 +62,14 @@ class ProductController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
+    public function actionDetail()
+    {
+        $model = new Product();
+        return $this->render('detail', [
+            'model' => $model
+
+        ]);
+    }
 
     /**
      * Creates a new Product model.
@@ -93,7 +101,6 @@ class ProductController extends Controller
                 $model->save(false);
             }
             return $this->redirect(['view', 'id' => $model->id]);
-
         } else {
             // $model->loadDefaultValues();
         }
@@ -152,5 +159,4 @@ class ProductController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-
 }

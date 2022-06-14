@@ -4,10 +4,13 @@ namespace backend\controllers;
 
 use app\models\OrderAddress;
 use app\models\OrderItems;
+use app\models\Orders as ModelsOrders;
+use backend\models\Invoices;
 use backend\models\Orders;
 use backend\models\OrdersSearch;
 use yii;
 use Mpdf\Mpdf; #Php 7.0
+use Yii as GlobalYii;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -84,29 +87,45 @@ class OrdersController extends Controller
         return $this->render('view', [
             'model' => $this->findModel($id),
             'order_items' => $order_items,
-            'order_items_total_price' => $order_items_total_price
+            'order_items_total_price' => $order_items_total_price,
         ]);
     }
-    public function actionGenPdf($id)
-    {
-        // $order_item = Yii::$app->db->createCommand("SELECT SUM(total) as total_price FROM `order_item` 
-        // where order_id = :id")
-        //     ->bindParam("id", $id)
-        //     ->queryOne();
-        $orders = Orders::find()->one();
-        $user = Yii::$app->user->identity->id;
+    // public function actionGenPdf($id)
+    // {
+    //     // $order_item = Yii::$app->db->createCommand("SELECT SUM(total) as total_price FROM `order_item` 
+    //     // where order_id = :id")
+    //     //     ->bindParam("id", $id)
+    //     //     ->queryOne();
+    //     $orders = Orders::findOne($id);
+    //     $user = Yii::$app->user->identity->id;
 
-        $pdf_content = $this->renderPartial('view-pdf', [
-            'model' => $this->findModel($id),
+    //     $pdf_content = $this->renderPartial('invoice', [
+    //         'model' => $this->findModel($id),
+    //         'orders' => $orders,
+    //         // 'order_item' => $order_item
+
+    //     ]);
+
+    //     $model = new Mpdf();
+    //     $model->WriteHTML("$pdf_content");
+    //     $model->Output('MyPDF.pdf', 'D');
+    //     exit;
+    // }
+    public function actionInvoice($id)
+    {
+
+        // $model = new Orders();
+        $orders = Yii::$app->db->createCommand("SELECT product.`name` product_name, product.description product_description, order_items.quantity,  order_items.unit_price, order_items.total_price
+        FROM order_items
+        INNER JOIN product ON product.id = order_items.product_id
+        WHERE order_items.order_id = :id
+        ")
+            ->bindParam('id', $id)
+            ->queryAll();
+        return $this->render('invoice', [
             'orders' => $orders,
-            // 'order_item' => $order_item
 
         ]);
-
-        $model = new Mpdf();
-        $model->WriteHTML("$pdf_content");
-        $model->Output('MyPDF.pdf', 'D');
-        exit;
     }
 
     /**
@@ -116,7 +135,7 @@ class OrdersController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Orders();
+        $model = new ModelsOrders();
 
         if ($this->request->isPost) {
             if ($model->load($this->request->post()) && $model->save()) {
@@ -180,20 +199,4 @@ class OrdersController extends Controller
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-    // public function actionPdf()
-    // {
-
-    //     $user = Yii::$app->user->identity->id;
-    //     // $order_item = OrderItems::find()->all();
-
-    //     $request = Yii::$app->request;
-    //     $generate_table = $request->post();
-    //     $mpdf = new mPDF;
-    //     $mpdf->WriteHTML($this->renderPartial('view_pdf'));
-    //     $mpdf->Output('data.pdf', 'D');
-    //     exit;
-    //     // return $this->render('pdf', [
-    //     //     'order_item' => $order_item
-    //     // ]);
-    // }
 }

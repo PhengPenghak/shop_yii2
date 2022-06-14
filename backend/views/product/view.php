@@ -35,14 +35,14 @@ $this->params['breadcrumbs'][] = $this->title;
             'price:currency',
             [
                 'attribute' => 'status',
-                'format'=>['html'],
-                'value' => fn() =>Html::tag('span', $model->status ? 'Active' : 'Draft', ['class' => $model->status ? 'badge badge-success' : 'badge badge-danger'])
+                'format' => ['html'],
+                'value' => fn () => Html::tag('span', $model->status ? 'Active' : 'Draft', ['class' => $model->status ? 'badge badge-success' : 'badge badge-danger'])
             ],
             [
                 'attribute' => 'image_url',
                 'label' => 'ProductImage',
-                'format'=>['html'],
-                'value'=> fn()=>Html::img($model->imageUrl, ['style' => 'width:100px;']),
+                'format' => ['html'],
+                'value' => fn () => Html::img($model->imageUrl, ['style' => 'width:70px;']),
             ],
             //'image_url:url',
             'description',

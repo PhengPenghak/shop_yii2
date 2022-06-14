@@ -19,42 +19,42 @@ $this->title = 'Products';
 $this->params['breadcrumbs'][] = $this->title;
 // echo date('Y-m-d H:i:s');
 ?>
-    <?php $form = ActiveForm::begin([
+<?php $form = ActiveForm::begin([
     'action' => ['index'],
 
     'method' => 'get',
 
-]);?>
+]); ?>
 
 <div class="product-index">
-<?php
+    <?php
 
-Modal::begin([
-    'title' => 'Create Order',
-    'id' => 'modal',
-    'size' => 'modal-lg',
-]);
+    Modal::begin([
+        'title' => 'Create Order',
+        'id' => 'modal',
+        'size' => 'modal-lg',
+    ]);
 
-echo "<div id='modalContent'></div>";
+    echo "<div id='modalContent'></div>";
 
-Modal::end();
-?>
-    <h1><?=Html::encode($this->title)?></h1>
+    Modal::end();
+    ?>
+    <h1><?= Html::encode($this->title) ?></h1>
 
 
     <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-    <?=GridView::widget([
-    'dataProvider' => $dataProvider,
-    'tableOptions' => [
-        'class' => 'table table-hover',
-    ],
-    'pager' => [
-        'firstPageLabel' => 'First',
-        'lastPageLabel' => 'Last',
-        'class' => LinkPager::class,
-    ],
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'tableOptions' => [
+            'class' => 'table table-hover',
+        ],
+        'pager' => [
+            'firstPageLabel' => 'First',
+            'lastPageLabel' => 'Last',
+            'class' => LinkPager::class,
+        ],
 
-    'layout' => '
+        'layout' => '
             {items}
             <div class="row mb-3">
                 <div class="col-lg-6">
@@ -65,66 +65,64 @@ Modal::end();
                     </div>
             </div>
         ',
-    'columns' => [
-        ['class' => 'yii\grid\SerialColumn'],
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
 
-        'name',
+            'name',
 
-        // [
-        //     'attribute' => 'release_date',
-        //     'value' => function ($model) {
-        //         $formater = Yii::$app->formater;
-        //         return $formater->fmDate($model->release_date);
-        //     }
-        // ],
-        //show image in backend
-        [
-            'attribute' => 'image_url',
-            'label' => 'ProductImage',
-            'content' => function ($model) {
-                return Html::img($model->imageUrl, ['style' => 'width:100px;']);
-            },
-            'contentOptions' => [
-                'style' => 'width:50px;',
+            // [
+            //     'attribute' => 'release_date',
+            //     'value' => function ($model) {
+            //         $formater = Yii::$app->formater;
+            //         return $formater->fmDate($model->release_date);
+            //     }
+            // ],
+            //show image in backend
+            [
+                'attribute' => 'image_url',
+                'label' => 'ProductImage',
+                'content' => function ($model) {
+                    return Html::img($model->imageUrl, ['style' => 'width:100px;']);
+                },
+                'contentOptions' => [
+                    'style' => 'width:50px;',
+                ],
+            ],
+
+            'price:currency',
+            [
+                'attribute' => 'status',
+                'content' => function ($model) {
+                    /** @var \common\models\Product $model */
+
+                    return Html::tag('span', $model->status ? 'Active' : 'Draft', [
+                        'class' => $model->status ? 'badge badge-success' : 'badge badge-danger',
+                    ]);
+                },
+            ],
+            [
+                'attribute' => 'created_date',
+                'format' => 'datetime',
+                'contentOptions' => ['style' => 'white-space:nowrap'],
+
+            ],
+            // [
+            //     'attribute' => 'created_by',
+            //     'format' => 'datetime',
+            //     'contentOptions' => ['style' => 'white-space:nowrap'],
+
+            // ],
+
+            // 'created_date:datetime',
+            // 'product_create_date',
+            //'description',
+            //'rate',
+            // 'id',
+            [
+                'class' => ActionColumn::class,
+                'urlCreator' => function ($action, $model, $key, $index, $column) {
+                    return Url::toRoute([$action, 'id' => $model->id]);
+                }, 'header' => 'action',
             ],
         ],
-
-        'price:currency',
-        [
-            'attribute' => 'status',
-            'content' => function ($model) {
-                /** @var \common\models\Product $model */
-
-                return Html::tag('span', $model->status ? 'Active' : 'Draft', [
-                    'class' => $model->status ? 'badge badge-success' : 'badge badge-danger',
-                ]);
-            },
-        ],
-        [
-            'attribute' => 'created_date',
-            'format' => 'datetime',
-            'contentOptions' => ['style' => 'white-space:nowrap'],
-
-        ],
-        // [
-        //     'attribute' => 'created_by',
-        //     'format' => 'datetime',
-        //     'contentOptions' => ['style' => 'white-space:nowrap'],
-
-        // ],
-
-        // 'created_date:datetime',
-        // 'product_create_date',
-        //'description',
-        //'rate',
-        // 'id',
-        [
-            'class' => ActionColumn::class,
-            'urlCreator' => function ($action, $model, $key, $index, $column) {
-                return Url::toRoute([$action, 'id' => $model->id]);
-            }
-            , 'header' => 'action',
-        ],
-    ],
-]);?>
-
+    ]); ?>

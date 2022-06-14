@@ -21,15 +21,26 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+
         'tableOptions' => [
             'class' => 'table table-hover',
         ],
+        'layout' => '
+            {items}
+            <div class="row mb-3">
+                <div class="col-lg-6">
+                   {summary}
+                </div>
+                    <div class="col-lg-6">
+                        {pager}
+                    </div>
+            </div>
+        ',
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
             // 'id',
-
+            //'product_id',
             'firstname',
             'lastname',
             'total_price',
@@ -39,14 +50,25 @@ $this->params['breadcrumbs'][] = $this->title;
             'created_at',
             //'create_by',
             [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}{invoice}',
+                'buttons' => [
 
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                },
+                    'view' => function ($url) {
+                        return Html::a('View', $url, ['class' => 'btn btn-outline-primary']);
+                    },
+
+                    'invoice' => function ($url, $model) {
+                        return Html::a('Invoice', ['/orders/invoice', 'id' => $model->id], [
+                            'class' => 'btn btn-outline-warning',
+                        ]);
+                    },
+
+                ],
                 'header' => 'action',
-
             ],
+
+
 
         ],
     ]); ?>

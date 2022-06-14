@@ -188,19 +188,16 @@ use yii\helpers\Html;
                                 <th class="text-center" width="10%">LastName</th>
                                 <th class="text-right" width="20%">TOTAL</th>
                                 <th class="text-right" width="20%">Create Date</th>
-
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td class="text-center"><?= $orders->firstname ?></td>
-                                <td class="text-center"><?= $orders->lastname ?></td>
-                                <td class="text-center"><?= $orders->total_price ?></td>
-                                <td class="text-center"><?= $orders->created_at ?></td>
+                                <td><?= $orders['firstname'] ?></td>
+                                <td><?= $orders['lastname'] ?></td>
+                                <td><?= $orders['total_price'] ?></td>
+                                <td><?= $orders['created_at'] ?></td>
 
                             </tr>
-
-
                         </tbody>
                     </table>
                 </div>

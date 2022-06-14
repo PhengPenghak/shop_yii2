@@ -299,7 +299,7 @@ class SiteController extends Controller
         $product = Product::find()->where(['product_category' => 2])->all();
         $this->layout = "homepage";
         return $this->render('product', [
-            'product'=>$product
+            'product' => $product
         ]);
     }
 
@@ -321,7 +321,6 @@ class SiteController extends Controller
         return $this->render('product-detail', [
             'model' => $model,
         ]);
-
     }
     public function actionCheckout()
     {
@@ -340,7 +339,6 @@ class SiteController extends Controller
             $order->create_by = $user->getId();
             $order->created_at = date("Y-m-d h:i:s");
             if ($order->save()) {
-
                 $current_cart = Cart::find()->where(['user_id' => Yii::$app->user->identity->id])->all();
                 if (!empty($current_cart)) {
                     foreach ($current_cart as $key => $value) {
@@ -373,7 +371,6 @@ class SiteController extends Controller
             $userId = Yii::$app->user->id;
             $profile = Yii::$app->user->identity->username;
             $carts = Cart::find()->where(['user_id' => $userId])->all();
-
         }
         $this->layout = "homepage";
         $current_user = Yii::$app->user->identity->id;
@@ -385,7 +382,8 @@ class SiteController extends Controller
         )->queryAll();
         $totalPrice = (float) $this->getCartTotalPrice();
         $totalCart = (int) Cart::find(['user_id' => $current_user])->count();
-        return $this->render('page-checkout',
+        return $this->render(
+            'page-checkout',
             [
                 'model' => $model,
                 'carts' => $carts,

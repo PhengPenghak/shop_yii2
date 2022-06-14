@@ -14,14 +14,14 @@ class ProductSearch extends Product
     /**
      * {@inheritdoc}
      */
-    public $globalSearch;
-    public $start_date;
-    public $end_date;
+    public $globalSearch, $from_date, $to_date;
+
     public function rules()
     {
         return [
             [['id', 'category_id', 'created_by'], 'integer'],
             [['status', 'name', 'globalSearch', 'created_date', 'price', 'image_url', 'description'], 'safe'],
+            [['globalSearch', 'from_date', 'to_date'], 'safe'],
             [['rate'], 'number'],
         ];
     }
@@ -69,13 +69,15 @@ class ProductSearch extends Product
             'created_by' => $this->created_by,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name])
+        $query->andFilterWhere(['between', 'DATE(created_date)', $this->from_date, $this->to_date])
+            ->andFilterWhere([
+                'OR',
 
-            ->andFilterWhere(['like', 'status', $this->status])
-            ->andFilterWhere(['like', 'price', $this->price])
-            ->andFilterWhere(['like', 'image_url', $this->image_url])
-            ->andFilterWhere(['like', 'description', $this->description])
-            ->andFilterWhere(['like', 'Created_date', $this->created_date]);
+                ['like', 'status', $this->globalSearch],
+                ['like', 'price', $this->globalSearch],
+                ['like', 'created_date', $this->globalSearch],
+
+            ]);
 
         $query->FilterWhere(['like', 'code', $this->globalSearch])
             ->FilterWhere(['like', 'product.name', $this->globalSearch]);

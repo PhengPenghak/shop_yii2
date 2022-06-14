@@ -31,6 +31,42 @@ return [
                 ],
             ],
         ],
+        'i18n' => [
+
+            'translations' => [
+
+               'app' => [
+
+                    'class' => 'yii\i18n\PhpMessageSource',
+
+                    'basePath' => '@common/messages',
+
+                    'sourceLanguage' => 'en-US',
+
+                ],
+
+                'yii' => [
+
+                    'class' => 'yii\i18n\PhpMessageSource',
+
+                    'basePath' => '@common/messages',
+
+                    'sourceLanguage' => 'en-US',
+
+                ],
+
+                'yii2mod.rbac' => [
+
+                    'class' => 'yii\i18n\PhpMessageSource',
+
+                    'basePath' => '@common/messages',
+
+                    'sourceLanguage' => 'en-US',
+
+                ],
+            ],
+
+        ],
 
     ],
     'params' => $params,

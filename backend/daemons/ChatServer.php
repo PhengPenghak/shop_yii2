@@ -1,10 +1,12 @@
 <?php
 
 namespace backend\daemons;
+
 use consik\yii2websocket\events\WSClientEvent;
 use consik\yii2websocket\WebSocketServer;
 use Ratchet\ConnectionInterface;
 use Yii;
+
 class ChatServer extends WebSocketServer
 
 {

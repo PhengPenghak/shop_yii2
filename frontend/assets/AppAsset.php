@@ -22,22 +22,20 @@ class AppAsset extends AssetBundle
         'css/page-cart.css',
         'css/profile.css',
         'css/darkmode.css',
-        'css/leftnavbar.css'
-
-        // 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css',
+        'css/leftnavbar.css',
+        'https://polyfill.io/v3/polyfill.min.js?features=default'
 
     ];
     public $js = [
         'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js',
-        // 'https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js',
-        // 'https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js',
-        // 'https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js',
+
         'js/jquery-3.4.1.min.js',
         'js/bootstrap.js',
         'js/custom.js',
         'js/scripts.js',
-        // 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js',
+        'js/googlemap.js',
         'js/darkmode.js',
+        'https://maps.googleapis.com/maps/api/js?AIzaSyBZaSqieNhh6dQYA3Tc2rj3glct0EzU7-Y&callback=initMap&v=weekly'
     ];
     public $depends = [
         'yii\web\YiiAsset',
