@@ -6,6 +6,7 @@ use app\models\Cart;
 use app\models\OrderAddress;
 use app\models\OrderItems;
 use app\models\Orders;
+use backend\models\Message;
 use backend\models\Product;
 use common\models\LoginForm;
 use common\models\User;
@@ -430,6 +431,35 @@ class SiteController extends Controller
         return $this->render('product-dell', [
             'dataProvider' => $dataProvider,
             'product_dell' => $product_dell,
+        ]);
+    }
+    public function actionMessage()
+    {
+        $order_id = 1;
+        if (Yii::$app->request->isAjax) {
+            if (Yii::$app->request->post('action') == 'submit') {
+
+                $message = Yii::$app->request->post('message');
+                $model = new Message();
+                $model->order_id = $order_id;
+                $model->content = $message;
+                $model->is_read = 0;
+                $model->user_id = Yii::$app->user->identity->id;
+                $model->created_at = date("Y-m-d H:i:s");
+                if ($model->save()) {
+                    return json_encode("Sucess");
+                } else {
+                    return json_encode("Error:" . $model->getErrors());
+                }
+            }
+        }
+        $messageData = Message::find()
+            ->where(['order_id' => $order_id])
+            ->orderBy(['created_at' => SORT_ASC])
+            ->all();
+        return $this->render('message', [
+            'messageData' => $messageData,
+
         ]);
     }
     /**

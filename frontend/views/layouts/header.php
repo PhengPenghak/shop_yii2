@@ -95,13 +95,14 @@ $totalCart = (int) $totalCart->quantity;
                             <a class="nav-link" href="<?= Url::to(['site/why']) ?>">Why Us</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= Url::to(['site/testimonial']) ?>">Testimonial</a>
+                            <a class="nav-link" href="<?= Url::to(['site/message']) ?>">Message</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="<?= Url::to(['site/contact']) ?>">Contact Us</a>
                         </li>
                     </ul>
                 </div>
+
                 <?php
                 if (Yii::$app->user->isGuest) {
                     $url_routes = Url::toRoute(['site/signup']);

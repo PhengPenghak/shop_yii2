@@ -2,19 +2,16 @@
 
 namespace backend\controllers;
 
-use backend\models\Product;
-use backend\models\ProductSearch;
-use Yii;
-use yii\filters\VerbFilter;
-use yii\helpers\Inflector;
+use backend\models\Message;
+use backend\models\MessageSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use yii\web\UploadedFile;
+use yii\filters\VerbFilter;
 
 /**
- * ProductController implements the CRUD actions for Product model.
+ * MessageController implements the CRUD actions for Message model.
  */
-class ProductController extends Controller
+class MessageController extends Controller
 {
     /**
      * @inheritDoc
@@ -35,15 +32,15 @@ class ProductController extends Controller
     }
 
     /**
-     * Lists all Product models.
+     * Lists all Message models.
      *
      * @return string
      */
     public function actionIndex()
     {
-        $searchModel = new ProductSearch();
+        $searchModel = new MessageSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
-        $dataProvider->setPagination(['pageSize' => 5]);
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -51,7 +48,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Displays a single Product model.
+     * Displays a single Message model.
      * @param int $id ID
      * @return string
      * @throws NotFoundHttpException if the model cannot be found
@@ -62,58 +59,31 @@ class ProductController extends Controller
             'model' => $this->findModel($id),
         ]);
     }
-    public function actionDetail()
-    {
-        $product = Product::find()->all();
-        $model = new Product();
-        return $this->render('detail', [
-            'model' => $model,
-            'product' => $product
-
-        ]);
-    }
 
     /**
-     * Creates a new Product model.
+     * Creates a new Message model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return string|\yii\web\Response
      */
     public function actionCreate()
     {
-        $model = new Product();
+        $model = new Message();
+
         if ($this->request->isPost) {
-            if ($model->load($this->request->post())) {
-
-                $model->created_date = date('Y-m-d H:m:s');
-
-                $imagename = Inflector::slug($model->name) . '-' . time();
-                $model->image_url = UploadedFile::getInstance($model, 'image_url');
-                $upload_path = Yii::getAlias("@frontend/web/upload/");
-                // print_r( $model->image_url);
-                // exit;
-                if (!empty($model->image_url)) {
-                    if (!is_dir($upload_path)) {
-                        mkdir($upload_path, 0777, true);
-                    }
-                    $model->image_url->saveAs($upload_path . $imagename . '.' . $model->image_url->extension);
-                    //save file uploaded to db
-                    $model->image_url = $imagename . '.' . $model->image_url->extension;
-                }
-
-                $model->save(false);
+            if ($model->load($this->request->post()) && $model->save()) {
+                return $this->redirect(['view', 'id' => $model->id]);
             }
-            return $this->redirect(['view', 'id' => $model->id]);
         } else {
-            // $model->loadDefaultValues();
+            $model->loadDefaultValues();
         }
 
-        return $this->renderAjax('create', [
+        return $this->render('create', [
             'model' => $model,
         ]);
     }
 
     /**
-     * Updates an existing Product model.
+     * Updates an existing Message model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param int $id ID
      * @return string|\yii\web\Response
@@ -133,7 +103,7 @@ class ProductController extends Controller
     }
 
     /**
-     * Deletes an existing Product model.
+     * Deletes an existing Message model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param int $id ID
      * @return \yii\web\Response
@@ -147,15 +117,15 @@ class ProductController extends Controller
     }
 
     /**
-     * Finds the Product model based on its primary key value.
+     * Finds the Message model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param int $id ID
-     * @return Product the loaded model
+     * @return Message the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Product::findOne(['id' => $id])) !== null) {
+        if (($model = Message::findOne(['id' => $id])) !== null) {
             return $model;
         }
 

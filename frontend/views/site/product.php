@@ -141,6 +141,10 @@ Modal::end();
         </div>
 
       <?php } ?>
+
+    </div>
+    <div class="text-center">
+      <button id="load_more" class="btn btn-outline-primary rounded-0">Load More</button>
     </div>
   </div>
 </section>
@@ -196,6 +200,20 @@ $('.add-to-cart').click(function(e) {
   }
 })
   })
+  $(document).ready(function () {
+            $(".block").slice(0, 12).show();
+            if ($(".block:hidden").length != 0) {
+                $("#load_more").show();    
+            }
+            $("#load_more").on("click", function (e) {
+                e.preventDefault();
+                $(".block:hidden").slice(0, 12).slideDown();
+                if ($(".block:hidden").length == 0) {
+                    $("#load_more").text("No More to view")
+                        .fadOut("slow");
+                }
+            });
+        })
 JS;
 $this->registerJs($script);
 ?>

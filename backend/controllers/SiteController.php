@@ -2,13 +2,16 @@
 
 namespace backend\controllers;
 
+use backend\models\Message;
 use common\models\LoginForm;
 use frontend\models\SignupForm;
+use phpDocumentor\Reflection\PseudoTypes\False_;
 use SebastianBergmann\CodeCoverage\Report\Html\Renderer;
 use Yii;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
 /**
@@ -30,7 +33,7 @@ class SiteController extends Controller
                         'allow' => true,
                     ],
                     [
-                        'actions' => ['logout', 'index', 'chat'],
+                        'actions' => ['logout', 'index', 'chat', 'message'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -120,5 +123,34 @@ class SiteController extends Controller
     public function actionChat()
     {
         return $this->render('chat');
+    }
+    public function actionMessage()
+    {
+        $order_id = 1;
+        if (Yii::$app->request->isAjax) {
+            if (Yii::$app->request->post('action') == 'submit') {
+
+                $message = Yii::$app->request->post('message');
+                $model = new Message();
+                $model->order_id = $order_id;
+                $model->content = $message;
+                $model->is_read = 0;
+                $model->user_id = Yii::$app->user->identity->id;
+                $model->created_at = date("Y-m-d H:i:s");
+                if ($model->save()) {
+                    return json_encode("Sucess");
+                } else {
+                    return json_encode("Error:" . $model->getErrors());
+                }
+            }
+        }
+            $messageData = Message::find()
+                ->where(['order_id' => $order_id])
+                ->orderBy(['created_at' => SORT_ASC])
+                ->all();
+        return $this->render('message', [
+            'messageData' => $messageData,
+            // 'message' => $message
+        ]);
     }
 }

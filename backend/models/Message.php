@@ -8,9 +8,11 @@ use Yii;
  * This is the model class for table "message".
  *
  * @property int $id
- * @property int|null $userID
- * @property string|null $message
- * @property string|null $updateDate
+ * @property int|null $user_id
+ * @property string|null $content
+ * @property string|null $created_at
+ * @property int|null $is_read
+ * @property int|null $order_id
  */
 class Message extends \yii\db\ActiveRecord
 {
@@ -28,11 +30,9 @@ class Message extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['id'], 'required'],
-            [['id', 'userID'], 'integer'],
-            [['message'], 'string'],
-            [['updateDate'], 'safe'],
-            [['id'], 'unique'],
+            [['user_id', 'is_read', 'order_id'], 'integer'],
+            [['content'], 'string'],
+            [['created_at'], 'safe'],
         ];
     }
 
@@ -43,9 +43,20 @@ class Message extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'userID' => 'User ID',
-            'message' => 'Message',
-            'updateDate' => 'Update Date',
+            'user_id' => 'User ID',
+            'content' => 'Content',
+            'created_at' => 'Created At',
+            'is_read' => 'Is Read',
+            'order_id' => 'Order ID',
         ];
+    }
+    public function getCustomerName()
+    {
+        return $this->customer->firstname . ' ' . $this->customer->lastname;
+    }
+
+    public function getCustomer()
+    {
+        return $this->hasOne(Orders::class, ['id' => 'order_id']);
     }
 }

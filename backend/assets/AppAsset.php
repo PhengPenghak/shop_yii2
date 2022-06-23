@@ -15,6 +15,11 @@ class AppAsset extends AssetBundle
         'vendor/fontawesome-free/css/all.min.css',
         'https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i',
         'css/sb-admin-2.min.css',
+        'css/message.css',
+        'https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'
+
+
+
     ];
     public $js = [
         'vendor/bootstrap/js/bootstrap.bundle.min.js',
@@ -23,6 +28,9 @@ class AppAsset extends AssetBundle
         'vendor/chart.js/Chart.min.js',
         'js/demo/chart-area-demo.js',
         'js/demo/chart-pie-demo.js',
+        'js/demo/message.js'
+
+
 
     ];
     public $depends = [

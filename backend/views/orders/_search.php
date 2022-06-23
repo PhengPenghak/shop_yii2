@@ -15,26 +15,7 @@ use yii\widgets\ActiveForm;
         'options' => ['id' => 'formInvoiceSearch', 'data-pjax' => true],
         'method' => 'get',
     ]); ?>
-    <div class="row">
-        <div class="col-lg-6">
-            <label>Date Range</label>
-            <div id="order__date__range" style="cursor: pointer;" class="form-control">
-                <i class="fas fa-calendar text-muted"></i>&nbsp;
-                <span></span> <i class="fa fa-caret-down text-muted float-right"></i>
-            </div>
-            <?= $form->field($model, 'from_date')->hiddenInput()->label(false) ?>
-            <?= $form->field($model, 'to_date')->hiddenInput()->label(false) ?>
-        </div>
-        <div class="col-lg-6">
-            <label>Search</label>
-            <?= $form->field($model, 'globalSearch')->textInput([
-                'placeholder' => 'Search...', 'aria-label' => 'Search', 'type' => 'search',
-                'class' => 'form-control form-control-navbar',
-                // 'style' => 'border-top-right-radius: 0;
-                //     border-bottom-right-radius: 0;'
-            ])->label(false) ?>
-        </div>
-    </div>
+
 
 
     <?php // echo $form->field($model, 'transaction') 
@@ -57,9 +38,29 @@ use yii\widgets\ActiveForm;
     <?php ActiveForm::end(); ?>
 
 </div>
-<?php
 
-$script = <<< JS
+<div class="row">
+    <div class="col-lg-6">
+        <label>Date Range</label>
+        <div id="order__date__range" style="cursor: pointer;" class="form-control">
+            <i class="fas fa-calendar text-muted"></i>&nbsp;
+            <span></span> <i class="fa fa-caret-down text-muted float-right"></i>
+        </div>
+        <?= $form->field($model, 'from_date')->hiddenInput()->label(false) ?>
+        <?= $form->field($model, 'to_date')->hiddenInput()->label(false) ?>
+    </div>
+    <div class="col-lg-6">
+        <label>Search</label>
+        <?= $form->field($model, 'globalSearch')->textInput([
+            'placeholder' => 'Search...', 'aria-label' => 'Search', 'type' => 'search',
+            'class' => 'form-control form-control-navbar',
+            // 'style' => 'border-top-right-radius: 0;
+            //     border-bottom-right-radius: 0;'
+        ])->label(false) ?>
+    </div>
+    <?php
+
+    $script = <<< JS
     var is_filter = $("#searchinvoices-from_date").val() != ''?true:false;
     if(!is_filter){
         var start = moment().startOf('week');
@@ -92,6 +93,6 @@ $script = <<< JS
         $('#formInvoiceSearch').trigger('submit');
     });
     JS;
-$this->registerJs($script);
+    $this->registerJs($script);
 
-?>
+    ?>

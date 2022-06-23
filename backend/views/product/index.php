@@ -78,16 +78,16 @@ $this->params['breadcrumbs'][] = $this->title;
             //     }
             // ],
             //show image in backend
-            [
-                'attribute' => 'image_url',
-                'label' => 'ProductImage',
-                'content' => function ($model) {
-                    return Html::img($model->imageUrl, ['style' => 'width:100px;']);
-                },
-                'contentOptions' => [
-                    'style' => 'width:50px;',
-                ],
-            ],
+            // [
+            //     'attribute' => 'image_url',
+            //     'label' => 'ProductImages',
+            //     'content' => function ($model) {
+            //         return Html::img($model->image_url, ['style' => 'width:100px;']);
+            //     },
+            //     'contentOptions' => [
+            //         'style' => 'width:50px;',
+            //     ],
+            // ],
 
             'price:currency',
             [

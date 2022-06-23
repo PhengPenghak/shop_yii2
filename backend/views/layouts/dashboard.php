@@ -33,7 +33,7 @@
          <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
              <div class="bg-white py-2 collapse-inner rounded">
                  <a class="collapse-item" href="<?= Url::to(['/orders/index']) ?>">Orders</a>
-
+                 <a class="collapse-item" href="<?= Url::to(['/site/message']) ?>">Message</a>
              </div>
          </div>
 
@@ -51,6 +51,7 @@
              </div>
          </div>
      </li>
+
      <!-- Divider -->
      <hr class="sidebar-divider d-none d-md-block">
 
