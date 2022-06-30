@@ -126,7 +126,9 @@ class SiteController extends Controller
     }
     public function actionMessage()
     {
+        $userId = Yii::$app->user->id;
         $order_id = 1;
+
         if (Yii::$app->request->isAjax) {
             if (Yii::$app->request->post('action') == 'submit') {
 
@@ -135,7 +137,6 @@ class SiteController extends Controller
                 $model->order_id = $order_id;
                 $model->content = $message;
                 $model->is_read = 0;
-                $model->user_id = Yii::$app->user->identity->id;
                 $model->created_at = date("Y-m-d H:i:s");
                 if ($model->save()) {
                     return json_encode("Sucess");
@@ -144,13 +145,26 @@ class SiteController extends Controller
                 }
             }
         }
-            $messageData = Message::find()
-                ->where(['order_id' => $order_id])
-                ->orderBy(['created_at' => SORT_ASC])
-                ->all();
+        $user_id = Yii::$app->user->id;
+        $totalmessage = Yii::$app->db->createCommand(
+            "SELECT 
+            user_id
+            FROM `message`
+            WHERE is_read = 0
+            AND user_id IS NOT NULL
+            AND user_id = :user_id 
+            GROUP BY user_id"
+
+        )->bindParam(':user_id', $user_id)
+            ->queryAll();
+        $current_user = Yii::$app->user->identity->id;
+        $messageData = Message::find()
+            ->where(['order_id' => $order_id])
+            ->orderBy(['created_at' => SORT_ASC])
+            ->all();
         return $this->render('message', [
             'messageData' => $messageData,
-            // 'message' => $message
+            'totalmessage' => $totalmessage
         ]);
     }
 }

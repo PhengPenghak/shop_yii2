@@ -293,10 +293,10 @@ class SiteController extends Controller
     }
     public function actionProduct()
     {
-        $dataProvider = new ActiveDataProvider([
-            'query' => Product::find(),
-        ]);
-        $dataProvider->setPagination(['pageSize' => 8]);
+        // $dataProvider = new ActiveDataProvider([
+        //     'query' => Product::find(),
+        // ]);
+        // $dataProvider->setPagination(['pageSize' => 8]);
         $product = Product::find()->where(['product_category' => 2])->all();
         $this->layout = "homepage";
         return $this->render('product', [
@@ -402,11 +402,14 @@ class SiteController extends Controller
 
         $this->layout = "homepage";
         $product_msi = Product::find()->where(['product_category' => 1])->all();
-        return $this->render('product-msi', [
-            'product_msi' => $product_msi,
-            'dataProvider' => $dataProvider,
+        return $this->render(
+            'product-msi',
+            [
+                'product_msi' => $product_msi,
+                'dataProvider' => $dataProvider,
 
-        ]);
+            ]
+        );
     }
     public function actionAsus()
     {
@@ -453,13 +456,17 @@ class SiteController extends Controller
                 }
             }
         }
+
+        // $current_user = Yii::$app->user->identity->id;
+        // $totalMessage = (int) Cart::find(['is_read' => $current_user])->count();
         $messageData = Message::find()
             ->where(['order_id' => $order_id])
             ->orderBy(['created_at' => SORT_ASC])
             ->all();
+        $this->layout = "homepage";
         return $this->render('message', [
             'messageData' => $messageData,
-
+            // 'totalMessage' =>$totalMessage
         ]);
     }
     /**
@@ -504,7 +511,6 @@ class SiteController extends Controller
                     return json_encode(['status' => false, 'message' => 'updated']);
                 }
             }
-
             if ($this->request->post('action') == 'add-to-cart') {
                 $id = $this->request->post('id');
                 $userId = Yii::$app->user->id;
@@ -546,7 +552,6 @@ class SiteController extends Controller
      */
     public function actionPage()
     {
-
         $this->layout = "homepage";
         $current_user = Yii::$app->user->identity->id;
         $carts = Yii::$app->db->createCommand(
@@ -557,7 +562,14 @@ class SiteController extends Controller
         )->queryAll();
         $totalPrice = (float) $this->getCartTotalPrice();
         $totalCart = (int) Cart::find(['user_id' => $current_user])->count();
-        return $this->render('page-cart', ['carts' => $carts, 'total_price' => $totalPrice, 'total_cart' => $totalCart]);
+        return $this->render(
+            'page-cart',
+            [
+                'carts' => $carts,
+                'total_price' => $totalPrice,
+                'total_cart' => $totalCart
+            ]
+        );
     }
     private function getCartTotalPrice()
     {

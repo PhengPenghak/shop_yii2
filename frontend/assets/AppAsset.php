@@ -26,7 +26,8 @@ class AppAsset extends AssetBundle
         'https://polyfill.io/v3/polyfill.min.js?features=default',
         'css/message.css',
         'https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css',
-        'https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css'
+        'https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css',
+        'css/gird.css'
     ];
     public $js = [
         'https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js',

@@ -1,6 +1,7 @@
 <?php
 
 use app\models\Cart;
+use backend\models\Message;
 use common\models\User;
 use yii\bootstrap4\Html;
 use yii\bootstrap4\Modal;
@@ -26,6 +27,7 @@ $totalCart = Cart::find()
     ->one();
 $totalCart = (int) $totalCart->quantity;
 
+
 ?>
 
 <header class="header_section">
@@ -46,7 +48,6 @@ $totalCart = (int) $totalCart->quantity;
                         <i class="fa fa-search" aria-hidden="true"></i>
                     </button>
                 </from>
-
                 <div class="user_option_box">
                     <?php $menuItems[] = ['label' => '']; ?>
                     <a class="nav-icon position-relative text-decoration-none" href="<?= Url::to(['site/page']) ?>">
@@ -54,17 +55,15 @@ $totalCart = (int) $totalCart->quantity;
                             <span class="badge bg-dark text-white ms-2 rounded-pill"></span>
                             <a class="nav-link" href="<?= Url::to(['site/page']) ?>"> <i class="bi-cart-fill me-1"></i>
                                 Cart</a>
-                        </form> <span id="cart-quantity" class="position-absolute top-2 right-20 translate-middle badge rounded-pill badge badge-danger" style="margin-left: 73px; margin-bottom:-22px;">
+                        </form>
+                        <span id="cart-quantity" class="position-absolute top-2 right-20 translate-middle badge rounded-pill badge badge-danger" style="margin-left: 73px; margin-bottom:-22px;">
                             <?= $totalCart ?>
                         </span>
                     </a>
-
                 </div>
                 </a>
             </div>
-
         </div>
-
     </div>
     </div>
     <div class="header_bottom">
@@ -75,7 +74,6 @@ $totalCart = (int) $totalCart->quantity;
                         Minics
                     </span>
                 </a>
-
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class=""></span>
                 </button>
@@ -100,7 +98,9 @@ $totalCart = (int) $totalCart->quantity;
                         <li class="nav-item">
                             <a class="nav-link" href="<?= Url::to(['site/contact']) ?>">Contact Us</a>
                         </li>
+
                     </ul>
+
                 </div>
 
                 <?php
@@ -116,7 +116,6 @@ $totalCart = (int) $totalCart->quantity;
                 <?php
                 } else {
                 ?>
-
                     <ul class="navbar-nav ">
                         <button class="navbar-toggler  " type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -133,19 +132,14 @@ $totalCart = (int) $totalCart->quantity;
                             </ul>
                     </ul>
                     <img class="rounded-circle" src="<?= $base_url ?>/profile/uploads/<?= $model->image_url ?>" style="width:60px;height:60px;object-fit:cover;" alt="profile">
-
         </div>
-
-    <?php
-                }
-    ?>
+    <?php } ?>
     </nav>
     </div>
     </div>
 </header>
 <?php
 $script = <<< JS
-
 $(document).on("click",".triggerModal",function(){
     $("#modal").modal("show").find("#modalContent").load($(this).attr("value"));
   });
